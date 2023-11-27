@@ -152,7 +152,7 @@ class Navbar extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    waitDuration: const Duration(milliseconds: 1000),
+                    waitDuration: const Duration(milliseconds: 0),
                     child: InkWell(
                       onTap: items[i].onPressed,
                       borderRadius: BorderRadius.circular(20),

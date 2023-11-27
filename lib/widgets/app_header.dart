@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
 import 'package:flutter_portfolio/utils/svg_icons.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
+import 'package:flutter_portfolio/widgets/brightness_mode_toggle.dart';
+import 'package:flutter_portfolio/widgets/header_download_button.dart';
+import 'package:flutter_portfolio/widgets/social_header.dart';
 
 class AppHeader extends StatelessWidget {
   @override
@@ -11,40 +14,13 @@ class AppHeader extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SocialHeader(
-              children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(5),
-                  onTap: () {
-                    print('tapped');
-                  },
-                  child: SvgIcons.linkedin,
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(5),
-                  onTap: () {
-                    print('tapped');
-                  },
-                  child: SvgIcons.github,
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(5),
-                  onTap: () {
-                    print('tapped');
-                  },
-                  child: SvgIcons.youtube,
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(5),
-                  onTap: () {
-                    print('tapped');
-                  },
-                  child: SvgIcons.instagram,
-                ),
-              ],
-            ),
+            const SizedBox(width: 800),
+            AppSocialHeader(),
+            const SizedBox(width: 25),
+            AppHeaderDownloadButton(),
+            const SizedBox(width: 350),
+            BrightnessModeToggle(),
           ],
         ),
       ),
@@ -52,35 +28,53 @@ class AppHeader extends StatelessWidget {
   }
 }
 
-class SocialHeader extends StatelessWidget with ThemeUtils {
-  final List<Widget> children;
-
-  SocialHeader({super.key, required this.children});
-
+class AppSocialHeader extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    return Ink(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ...separateWidgets(
-            children.map(
-                  (e) => SizedBox(
-                height: 30,
-                width: 30,
-                child: e,
-              ),
-            ),
-            const SizedBox(width: 30),
+    return SocialHeader(
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(5),
+          onTap: () {
+            print('tapped');
+          },
+          child: SvgIcons.linkedin,
+        ),
+        InkWell(
+          borderRadius: BorderRadius.circular(5),
+          onTap: () {
+            print('tapped');
+          },
+          child: SvgIcons.github.copyWith(
+            color: colorScheme.onBackground,
           ),
-        ],
-      ),
+        ),
+        InkWell(
+          borderRadius: BorderRadius.circular(5),
+          onTap: () {
+            print('tapped');
+          },
+          child: SvgIcons.youtube,
+        ),
+        InkWell(
+          borderRadius: BorderRadius.circular(5),
+          onTap: () {
+            print('tapped');
+          },
+          child: SvgIcons.instagram,
+        ),
+      ],
+    );
+  }
+}
+
+class AppHeaderDownloadButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return HeaderDownloadButton(
+      onPressed: () {},
+      title: const Text('CV'),
     );
   }
 }

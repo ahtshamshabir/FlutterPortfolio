@@ -7,8 +7,12 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
   void toggle() {
     state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
   }
+
+  void setThemeMode(ThemeMode mode) {
+    state = mode;
+  }
 }
 
 final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>(
-      (ref) => ThemeModeNotifier(),
+  (ref) => ThemeModeNotifier(),
 );
