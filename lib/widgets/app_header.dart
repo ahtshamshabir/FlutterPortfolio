@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
 import 'package:flutter_portfolio/utils/svg_icons.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
@@ -15,12 +16,25 @@ class AppHeader extends StatelessWidget {
         color: Colors.transparent,
         child: Row(
           children: [
-            const SizedBox(width: 800),
+            const Flexible(
+              flex: 43,
+              child: SizedBox(width: double.infinity),
+            ),
             AppSocialHeader(),
-            const SizedBox(width: 25),
+            const Flexible(
+              flex: 1,
+              child: SizedBox(width: double.infinity),
+            ),
             AppHeaderDownloadButton(),
-            const SizedBox(width: 350),
+            const Flexible(
+              flex: 22,
+              child: SizedBox(width: double.infinity),
+            ),
             BrightnessModeToggle(),
+            const Flexible(
+              flex: 6,
+              child: SizedBox(width: double.infinity),
+            ),
           ],
         ),
       ),

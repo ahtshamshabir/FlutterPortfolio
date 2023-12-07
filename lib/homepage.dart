@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/sections/devices_section.dart';
 import 'package:flutter_portfolio/sections/intro_section.dart';
+import 'package:flutter_portfolio/sections/skills_section.dart';
 import 'package:flutter_portfolio/themes/theme_mode_provider.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
 import 'package:flutter_portfolio/widgets/app_header.dart';
@@ -64,12 +66,9 @@ class HomepageSections extends StatelessWidget {
       physics: const CustomPageViewScrollPhysics(),
       controller: controller,
       children: [
+        SkillsSection(),
         IntroSection(),
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.green,
-        ),
+        DevicesSection(),
         Container(
           height: double.infinity,
           width: double.infinity,
