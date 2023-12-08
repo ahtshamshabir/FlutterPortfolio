@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/sections/contact_section.dart';
 import 'package:flutter_portfolio/sections/devices_section.dart';
 import 'package:flutter_portfolio/sections/intro_section.dart';
+import 'package:flutter_portfolio/sections/projects_section.dart';
 import 'package:flutter_portfolio/sections/skills_section.dart';
 import 'package:flutter_portfolio/themes/theme_mode_provider.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
@@ -66,7 +68,6 @@ class HomepageSections extends StatelessWidget {
       physics: const CustomPageViewScrollPhysics(),
       controller: controller,
       children: [
-        SkillsSection(),
         IntroSection(),
         DevicesSection(),
         Container(
@@ -74,26 +75,9 @@ class HomepageSections extends StatelessWidget {
           width: double.infinity,
           color: Colors.yellow,
         ),
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.purple,
-        ),
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.orange,
-        ),
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.red,
-        ),
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.greenAccent,
-        ),
+        SkillsSection(),
+        ProjectsSection(),
+        ContactSection(),
       ],
     );
   }
@@ -235,29 +219,29 @@ class AppNavbar extends StatelessWidget {
               },
             ),
             NavItem(
-              title: 'About',
-              icon: Icons.info,
-              onPressed: () {
-                goToPage(2);
-              },
-            ),
-            NavItem(
               title: 'Experience',
               icon: Icons.work,
               onPressed: () {
-                goToPage(3);
+                goToPage(2);
               },
             ),
             NavItem(
               title: 'Skills',
               icon: Icons.assignment,
               onPressed: () {
-                goToPage(4);
+                goToPage(3);
               },
             ),
             NavItem(
               title: 'Projects',
               icon: Icons.assignment_turned_in,
+              onPressed: () {
+                goToPage(4);
+              },
+            ),
+            NavItem(
+              title: 'Projects',
+              icon: Icons.send,
               onPressed: () {
                 goToPage(5);
               },

@@ -9,7 +9,57 @@ var darkThemeData = ThemeData(
   extensions: const [
     AppColors(cardColor: Color(0xFF3C3C3C)),
   ],
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: darkThemeTextScheme.bodyMedium?.copyWith(
+      fontWeight: FontWeight.w400,
+      fontSize: 16,
+      color: const Color(0xFFCAC4D0),
+    ),
+    prefixIconColor: const Color(0xFFCAC4D0),
+    hintStyle: darkThemeTextScheme.bodyMedium?.copyWith(
+      fontWeight: FontWeight.w400,
+      fontSize: 16,
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Color(0xFF938F99),
+        width: 1,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(
+        color: darkColorScheme.primary,
+        width: 2,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Color(0xFF938F99),
+        width: 1,
+      ),
+    ),
+  ),
   useMaterial3: true,
+  buttonTheme: const ButtonThemeData(
+    buttonColor: Color(0xFF3BAADB),
+    textTheme: ButtonTextTheme.primary,
+  ),
+  filledButtonTheme: FilledButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(Color(0xFF3BAADB)),
+      foregroundColor: MaterialStateProperty.all(darkColorScheme.onBackground),
+      textStyle: MaterialStateProperty.all(
+        TextStyle(
+          fontFamily: FontFamily.inter,
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
+        ),
+      ),
+    ),
+  ),
 );
 
 var darkThemeTextScheme = Typography.whiteMountainView.copyWith(
@@ -75,11 +125,11 @@ var darkThemeTextScheme = Typography.whiteMountainView.copyWith(
   ),
 );
 
-var darkColorScheme = const ColorScheme(
+const darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color(0xFFBB86FC),
+  primary: Color(0xFF26DFFF),
   onPrimary: Color(0xFF000000),
-  secondary: Color(0xFF03DAC6),
+  secondary: Color(0xFF786CFF),
   onSecondary: Color(0xFF000000),
   tertiary: Color(0xFFFF906C),
   error: Color(0xFFCF6679),
@@ -91,4 +141,5 @@ var darkColorScheme = const ColorScheme(
   onSurface: Color(0xFF000000),
   inversePrimary: Color(0xFF786CFF),
   inverseSurface: Color(0xFFFF6C6C),
+  primaryContainer: Color(0xFF3BAADB),
 );

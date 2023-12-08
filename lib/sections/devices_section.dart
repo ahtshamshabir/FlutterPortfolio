@@ -14,7 +14,7 @@ class DevicesSection extends StatelessWidget with ThemeUtils {
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: colorScheme.surface,
+          color: colorScheme.surfaceVariant,
           borderRadius: BorderRadius.circular(30),
         ),
         padding: const EdgeInsets.all(10),

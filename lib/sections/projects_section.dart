@@ -5,8 +5,8 @@ import 'package:flutter_portfolio/utils/theme_utils.dart';
 import 'package:flutter_portfolio/widgets/section_surface.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SkillsSection extends StatelessWidget with ThemeUtils {
-  SkillsSection({super.key});
+class ProjectsSection extends StatelessWidget with ThemeUtils {
+  ProjectsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
           child: Column(
             children: [
               Text(
-                'Skills',
+                'Projects',
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   fontSize: 40,
@@ -38,7 +38,7 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
                   child: GridView(
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 6,
+                      crossAxisCount: 3,
                       childAspectRatio: 1,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
@@ -46,34 +46,7 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
                     children: [
                       SkillCard(icon: SvgIcons.flutter, title: 'Flutter'),
                       SkillCard(icon: SvgIcons.firebase, title: 'Firebase'),
-                      SkillCard(
-                        padding: EdgeInsets.fromLTRB(2.vw, 3.vw, 3.vw, 2.vw),
-                        icon: SvgIcons.strapi,
-                        title: 'Strapi',
-                      ),
-                      SkillCard(
-                        padding: EdgeInsets.fromLTRB(1.vw, 2.vw, 2.vw, 2.vw),
-                        icon: SvgIcons.neo4j,
-                        title: 'Neo4j',
-                      ),
                       SkillCard(icon: SvgIcons.react, title: 'React'),
-                      SkillCard(icon: SvgIcons.vue, title: 'Vue'),
-                      SkillCard(icon: SvgIcons.typescript, title: 'Typescript'),
-                      SkillCard(icon: SvgIcons.nodejs, title: 'NodeJS'),
-                      SkillCard(icon: SvgIcons.figma, title: 'Figma'),
-                      SkillCard(icon: SvgIcons.php, title: 'PHP'),
-                      SkillCard(icon: SvgIcons.mysql, title: 'MySQL'),
-                      SkillCard(icon: SvgIcons.mongodb, title: 'MongoDB'),
-                      SkillCard(icon: SvgIcons.google_cloud, title: 'Google Cloud'),
-                      SkillCard(icon: SvgIcons.javascript, title: 'Javascript'),
-                      SkillCard(icon: SvgIcons.graphql, title: 'GraphQL'),
-                      SkillCard(
-                        padding: EdgeInsets.fromLTRB(1.vw, 1.vw, 2.vw, 2.vw),
-                        icon: SvgIcons.blender,
-                        title: 'Blender',
-                      ),
-                      SkillCard(icon: SvgIcons.photoshop, title: 'Photoshop'),
-                      SkillCard(icon: SvgIcons.illustrator, title: 'Illustrator'),
                     ],
                   ),
                 ),
