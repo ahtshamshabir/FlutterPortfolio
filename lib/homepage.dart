@@ -66,7 +66,7 @@ class HomepageSections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-    return SingleChildScrollView(
+    var test = SingleChildScrollView(
       child: Column(
         children: [
           Container(
