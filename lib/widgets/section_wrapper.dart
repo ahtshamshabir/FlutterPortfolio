@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
 
-class SectionSurface extends StatelessWidget with ThemeUtils {
+class SectionWrapper extends StatelessWidget with ThemeUtils {
   final Widget child;
   final EdgeInsetsGeometry? padding;
-  SectionSurface({super.key, required this.child, this.padding});
+  SectionWrapper({super.key, required this.child, this.padding});
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);

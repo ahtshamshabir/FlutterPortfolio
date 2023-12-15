@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_portfolio/themes/app_colors_extension.dart';
+import 'package:flutter_portfolio/utils/colorize_text_theme.dart';
 import 'package:flutter_portfolio/utils/font_family.dart';
 
 var darkThemeData = ThemeData(
@@ -62,67 +63,69 @@ var darkThemeData = ThemeData(
   ),
 );
 
-var darkThemeTextScheme = Typography.whiteMountainView.copyWith(
-  displayLarge: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
+var darkThemeTextScheme = colorizeTextTheme(
+  textTheme: Typography.whiteMountainView.copyWith(
+    displayLarge: TextStyle(
+      fontFamily: FontFamily.inter,
+      fontSize: 74,
+      fontWeight: FontWeight.w400,
+    ),
+    displayMedium: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
+    displaySmall: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
+    headlineLarge: TextStyle(
+      fontFamily: FontFamily.inter,
+      fontSize: 40,
+      fontWeight: FontWeight.w700,
+    ),
+    headlineMedium: TextStyle(
+      fontFamily: FontFamily.inter,
+      fontSize: 33,
+      fontWeight: FontWeight.w500,
+    ),
+    headlineSmall: TextStyle(
+      fontFamily: FontFamily.inter,
+      fontSize: 29,
+      fontWeight: FontWeight.w400,
+    ),
+    titleLarge: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
+    titleMedium: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
+    titleSmall: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
+    bodyLarge: TextStyle(
+      fontFamily: FontFamily.inter,
+      fontSize: 30,
+      fontWeight: FontWeight.w400,
+    ),
+    bodyMedium: TextStyle(
+      fontFamily: FontFamily.inter,
+      fontSize: 26,
+      fontWeight: FontWeight.w400,
+    ),
+    bodySmall: TextStyle(
+      fontFamily: FontFamily.inter,
+      fontSize: 22,
+      fontWeight: FontWeight.w400,
+    ),
+    labelLarge: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
+    labelMedium: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
+    labelSmall: TextStyle(
+      fontFamily: FontFamily.inter,
+    ),
   ),
-  displayMedium: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  displaySmall: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  headlineLarge: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  headlineMedium: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  headlineSmall: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  titleLarge: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  titleMedium: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  titleSmall: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  bodyLarge: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  bodyMedium: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  bodySmall: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  labelLarge: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  labelMedium: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
-  labelSmall: TextStyle(
-    color: Colors.white,
-    fontFamily: FontFamily.inter,
-  ),
+  color: Colors.white,
 );
 
 const darkColorScheme = ColorScheme(

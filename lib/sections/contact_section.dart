@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
-import 'package:flutter_portfolio/widgets/section_surface.dart';
+import 'package:flutter_portfolio/widgets/section_wrapper.dart';
 
 class ContactSection extends StatelessWidget with ThemeUtils {
   ContactSection({super.key});
@@ -9,7 +9,7 @@ class ContactSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    return SectionSurface(
+    return SectionWrapper(
       child: Container(
         height: double.infinity,
         width: double.infinity,
@@ -25,32 +25,21 @@ class ContactSection extends StatelessWidget with ThemeUtils {
                 children: [
                   TextSpan(
                     text: 'Interested in working',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 40,
-                    ),
+                    style: textTheme.headlineLarge,
                   ),
                   TextSpan(
                     text: ' ',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 40,
-                    ),
+                    style: textTheme.headlineLarge,
                   ),
                   TextSpan(
                     text: 'Together',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 40,
+                    style: textTheme.headlineLarge?.copyWith(
                       color: colorScheme.primary,
                     ),
                   ),
                   TextSpan(
                     text: '?',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 40,
-                    ),
+                    style: textTheme.headlineLarge,
                   ),
                 ],
               ),
@@ -105,12 +94,12 @@ class ContactSection extends StatelessWidget with ThemeUtils {
                     style: const ButtonStyle(
                       padding: MaterialStatePropertyAll(EdgeInsets.fromLTRB(35, 20, 15, 20)),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('Send'),
-                        const SizedBox(width: 10),
-                        const Icon(
+                        Text('Send'),
+                        SizedBox(width: 10),
+                        Icon(
                           Icons.send,
                           size: 18,
                         ),

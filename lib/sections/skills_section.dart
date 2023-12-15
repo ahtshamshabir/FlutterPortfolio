@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/models/skill_detail.dart';
 import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/svg_icons.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
-import 'package:flutter_portfolio/widgets/section_surface.dart';
+import 'package:flutter_portfolio/widgets/section_wrapper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SkillsSection extends StatelessWidget with ThemeUtils {
@@ -11,7 +12,7 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    return SectionSurface(
+    return SectionWrapper(
       padding: EdgeInsets.symmetric(horizontal: 5.vw, vertical: 4.vw),
       child: Align(
         alignment: Alignment.center,
@@ -35,46 +36,30 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
               Expanded(
                 child: AspectRatio(
                   aspectRatio: 1.98,
-                  child: GridView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 6,
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                    ),
-                    children: [
-                      SkillCard(icon: SvgIcons.flutter, title: 'Flutter'),
-                      SkillCard(icon: SvgIcons.firebase, title: 'Firebase'),
-                      SkillCard(
-                        padding: EdgeInsets.fromLTRB(2.vw, 3.vw, 3.vw, 2.vw),
-                        icon: SvgIcons.strapi,
-                        title: 'Strapi',
-                      ),
-                      SkillCard(
-                        padding: EdgeInsets.fromLTRB(1.vw, 2.vw, 2.vw, 2.vw),
-                        icon: SvgIcons.neo4j,
-                        title: 'Neo4j',
-                      ),
-                      SkillCard(icon: SvgIcons.react, title: 'React'),
-                      SkillCard(icon: SvgIcons.vue, title: 'Vue'),
-                      SkillCard(icon: SvgIcons.typescript, title: 'Typescript'),
-                      SkillCard(icon: SvgIcons.nodejs, title: 'NodeJS'),
-                      SkillCard(icon: SvgIcons.figma, title: 'Figma'),
-                      SkillCard(icon: SvgIcons.php, title: 'PHP'),
-                      SkillCard(icon: SvgIcons.mysql, title: 'MySQL'),
-                      SkillCard(icon: SvgIcons.mongodb, title: 'MongoDB'),
-                      SkillCard(icon: SvgIcons.google_cloud, title: 'Google Cloud'),
-                      SkillCard(icon: SvgIcons.javascript, title: 'Javascript'),
-                      SkillCard(icon: SvgIcons.graphql, title: 'GraphQL'),
-                      SkillCard(
-                        padding: EdgeInsets.fromLTRB(1.vw, 1.vw, 2.vw, 2.vw),
-                        icon: SvgIcons.blender,
-                        title: 'Blender',
-                      ),
-                      SkillCard(icon: SvgIcons.photoshop, title: 'Photoshop'),
-                      SkillCard(icon: SvgIcons.illustrator, title: 'Illustrator'),
-                    ],
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      var maxWidth = constraints.maxWidth;
+                      var spacing = 20.0;
+                      var cardsPerRow = 6;
+                      var cardSize = (maxWidth - (cardsPerRow - 1) * spacing) / cardsPerRow;
+                      return Wrap(
+                        spacing: spacing,
+                        runSpacing: spacing,
+                        children: [
+                          ...skillRecords.map(
+                            (skillRecord) => SizedBox(
+                              width: cardSize,
+                              height: cardSize,
+                              child: SkillCard(
+                                icon: skillRecord.details.icon,
+                                title: skillRecord.details.name,
+                                padding: skillRecord.padding,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
@@ -85,6 +70,137 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
     );
   }
 }
+
+typedef SkillRecord = ({SkillDetail details, EdgeInsets? padding});
+
+var skillRecords = <SkillRecord>[
+  (
+    details: SkillDetail(
+      name: 'Flutter',
+      icon: SvgIcons.flutter,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Firebase',
+      icon: SvgIcons.firebase,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Strapi',
+      icon: SvgIcons.strapi,
+    ),
+    padding: EdgeInsets.fromLTRB(2.vw, 3.vw, 3.vw, 2.vw),
+  ),
+  (
+    details: SkillDetail(
+      name: 'Neo4j',
+      icon: SvgIcons.neo4j,
+    ),
+    padding: EdgeInsets.fromLTRB(1.vw, 2.vw, 2.vw, 2.vw),
+  ),
+  (
+    details: SkillDetail(
+      name: 'React',
+      icon: SvgIcons.react,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Vue',
+      icon: SvgIcons.vue,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Typescript',
+      icon: SvgIcons.typescript,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'NodeJS',
+      icon: SvgIcons.nodejs,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Figma',
+      icon: SvgIcons.figma,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'PHP',
+      icon: SvgIcons.php,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'MySQL',
+      icon: SvgIcons.mysql,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'MongoDB',
+      icon: SvgIcons.mongodb,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Google Cloud',
+      icon: SvgIcons.google_cloud,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Javascript',
+      icon: SvgIcons.javascript,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'GraphQL',
+      icon: SvgIcons.graphql,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Blender',
+      icon: SvgIcons.blender,
+    ),
+    padding: EdgeInsets.fromLTRB(1.vw, 1.vw, 2.vw, 2.vw),
+  ),
+  (
+    details: SkillDetail(
+      name: 'Photoshop',
+      icon: SvgIcons.photoshop,
+    ),
+    padding: null,
+  ),
+  (
+    details: SkillDetail(
+      name: 'Illustrator',
+      icon: SvgIcons.illustrator,
+    ),
+    padding: null,
+  ),
+];
 
 class SkillCard extends StatelessWidget with ThemeUtils {
   final SvgPicture icon;

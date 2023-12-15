@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
-import 'package:flutter_portfolio/widgets/section_surface.dart';
+import 'package:flutter_portfolio/widgets/section_wrapper.dart';
 
 class DevicesSection extends StatelessWidget with ThemeUtils {
   DevicesSection({super.key});
@@ -9,7 +9,7 @@ class DevicesSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    return SectionSurface(
+    return SectionWrapper(
       child: Container(
         height: double.infinity,
         width: double.infinity,

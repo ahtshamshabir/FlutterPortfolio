@@ -37,10 +37,9 @@ class InfoSection extends StatelessWidget with ThemeUtils {
         Text(
           '''Column(
   children: [''',
-          style: textTheme.bodyMedium!.copyWith(
+          style: textTheme.bodyLarge!.copyWith(
             fontFamily: FontFamily.sourceCodePro,
-            fontSize: 30,
-            color: Colors.white.withOpacity(0.25),
+            color: colorScheme.onBackground.withOpacity(0.25),
           ),
         ),
         Padding(
@@ -53,27 +52,18 @@ class InfoSection extends StatelessWidget with ThemeUtils {
                   children: [
                     TextSpan(
                       text: 'Raja',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: FontFamily.inter,
+                      style: textTheme.displayLarge?.copyWith(
                         fontWeight: FontWeight.w200,
-                        fontSize: 50,
-                      ),
-                    ),
-                    const TextSpan(
-                      text: ' ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        fontSize: 50,
                       ),
                     ),
                     TextSpan(
+                      text: ' ',
+                      style: textTheme.displayLarge,
+                    ),
+                    TextSpan(
                       text: 'Ahtsham Shabir',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontFamily: FontFamily.inter,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 50,
+                      style: textTheme.displayLarge?.copyWith(
+                        color: colorScheme.primary,
                       ),
                     ),
                   ],
@@ -81,19 +71,15 @@ class InfoSection extends StatelessWidget with ThemeUtils {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 'Software Engineer',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 33,
-                ),
+                style: textTheme.headlineMedium,
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 'I believe anything is possible with Flutter.',
-                style: TextStyle(
+                style: textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w400,
-                  fontSize: 33,
                 ),
               ),
             ],
@@ -102,10 +88,9 @@ class InfoSection extends StatelessWidget with ThemeUtils {
         Text(
           '''  ],
 );''',
-          style: textTheme.bodyMedium!.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             fontFamily: FontFamily.sourceCodePro,
-            fontSize: 30,
-            color: Colors.white.withOpacity(0.25),
+            color: colorScheme.onBackground.withOpacity(0.25),
           ),
         ),
       ],
@@ -122,7 +107,6 @@ class AvatarSection extends StatelessWidget with ThemeUtils {
     return Container(
       height: 34.vw,
       width: 34.vw,
-      // color: Colors.red,
       child: Stack(
         alignment: Alignment.center,
         children: [

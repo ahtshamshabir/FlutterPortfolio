@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/sections/skills_section.dart';
 import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/svg_icons.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
-import 'package:flutter_portfolio/widgets/section_surface.dart';
+import 'package:flutter_portfolio/widgets/section_wrapper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProjectsSection extends StatelessWidget with ThemeUtils {
@@ -11,7 +12,7 @@ class ProjectsSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    return SectionSurface(
+    return SectionWrapper(
       padding: EdgeInsets.symmetric(horizontal: 5.vw, vertical: 4.vw),
       child: Align(
         alignment: Alignment.center,
@@ -55,27 +56,6 @@ class ProjectsSection extends StatelessWidget with ThemeUtils {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SkillCard extends StatelessWidget with ThemeUtils {
-  final SvgPicture icon;
-  final String title;
-  final EdgeInsetsGeometry? padding;
-
-  SkillCard({super.key, required this.icon, required this.title, this.padding});
-
-  @override
-  Widget build(BuildContext context) {
-    initThemeUtils(context);
-    return Container(
-      padding: padding ?? EdgeInsets.all(2.vw),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: icon,
     );
   }
 }
