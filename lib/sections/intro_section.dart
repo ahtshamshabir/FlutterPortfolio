@@ -21,24 +21,6 @@ class IntroSection extends StatelessWidget with ThemeUtils {
         children: [
           InfoSection(),
           const Spacer(),
-          Container(
-            height: 200,
-            width: 200,
-            child: FittedBox(
-              child: FutureBuilder(
-                  future: svgStringToPngBytes('assets/icons/blender.svg', context),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Image.memory(snapshot.data!);
-                    } else if (snapshot.error != null) {
-                      print(snapshot.error);
-                      print((snapshot.error as Error).stackTrace);
-                      return Text(snapshot.error.toString());
-                    }
-                    return Container();
-                  }),
-            ),
-          ),
           AvatarSection(),
         ],
       ),

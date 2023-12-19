@@ -72,3 +72,35 @@ class SvgIcons {
   static SvgPicture typescript = SvgPicture.asset('assets/icons/typescript.svg');
   static SvgPicture vue = SvgPicture.asset('assets/icons/vue.svg');
 }
+
+var allSvgStrings = [
+  'assets/icons/blender.svg',
+  'assets/icons/firebase.svg',
+  'assets/icons/figma.svg',
+  'assets/icons/flutter.svg',
+  'assets/icons/github.svg',
+  'assets/icons/google_cloud.svg',
+  'assets/icons/graphql.svg',
+  'assets/icons/illustrator.svg',
+  'assets/icons/instagram.svg',
+  'assets/icons/javascript.svg',
+  'assets/icons/linkedin.svg',
+  'assets/icons/mongodb.svg',
+  'assets/icons/mysql.svg',
+  'assets/icons/neo4j.svg',
+  'assets/icons/nodejs.svg',
+  'assets/icons/photoshop.svg',
+  'assets/icons/php.svg',
+  'assets/icons/react.svg',
+  'assets/icons/strapi.svg',
+  'assets/icons/typescript.svg',
+  'assets/icons/vue.svg',
+  'assets/icons/youtube.svg',
+];
+
+Future cacheSvgs() async {
+  for(var svgString in allSvgStrings) {
+    var loader = SvgAssetLoader(svgString);
+    svg.cache.putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));
+  }
+}
