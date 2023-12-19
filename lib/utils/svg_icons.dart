@@ -3,49 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 
-extension CopyWith on SvgPicture {
-  SvgPicture copyWith({
-    BytesLoader? bytesLoader,
-    Key? key,
-    String? semanticsLabel,
-    bool? excludeFromSemantics,
-    double? width,
-    double? height,
-    BoxFit? fit,
-    AlignmentGeometry? alignment,
-    ImageRepeat? repeat,
-    Rect? centerSlice,
-    bool? matchTextDirection,
-    bool? allowDrawingOutsideViewBox,
-    ColorFilter? colorFilter,
-    String? package,
-    bool? useOldImageProvider,
-    Color? color,
-    BlendMode? colorBlendMode,
-    FilterQuality? filterQuality,
-    Clip? clipBehavior,
-    bool? cacheColorFilter,
-    SvgTheme? theme,
-    WidgetBuilder? placeholderBuilder,
-  }) {
-    return SvgPicture(
-      bytesLoader ?? this.bytesLoader,
-      key: key ?? this.key,
-      semanticsLabel: semanticsLabel ?? this.semanticsLabel,
-      excludeFromSemantics: excludeFromSemantics ?? this.excludeFromSemantics,
-      width: width ?? this.width,
-      height: height ?? this.height,
-      fit: fit ?? this.fit,
-      alignment: alignment ?? this.alignment,
-      matchTextDirection: matchTextDirection ?? this.matchTextDirection,
-      allowDrawingOutsideViewBox: allowDrawingOutsideViewBox ?? this.allowDrawingOutsideViewBox,
-      colorFilter:
-          color != null ? ColorFilter.mode(color, colorBlendMode ?? BlendMode.srcIn) : colorFilter ?? this.colorFilter,
-      placeholderBuilder: placeholderBuilder ?? this.placeholderBuilder,
-      clipBehavior: clipBehavior ?? this.clipBehavior,
-    );
-  }
-}
+ScalableImageCache _svgCache = ScalableImageCache(size: 70);
+
 
 class SvgIcons {
   SvgIcons._();
@@ -74,117 +33,117 @@ class SvgIcons {
       vue;
 
   static Future<void> init() async {
-    var allScalables = await Future.wait([
-      ScalableImage.fromSvgAsset(
+    var allScalables = [
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/linkedin.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/github.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/youtube.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/instagram.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/flutter.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/blender.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/figma.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/firebase.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/google_cloud.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/graphql.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/illustrator.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/javascript.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/mongodb.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/mysql.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/neo4j.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/nodejs.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/photoshop.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/php.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/react.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/strapi.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/typescript.svg',
       ),
-      ScalableImage.fromSvgAsset(
+      ScalableImageSource.fromSvg(
         rootBundle,
         'assets/icons/vue.svg',
       ),
-    ]);
-    linkedin = ScalableImageWidget(si: allScalables[0]);
-    github = ScalableImageWidget(si: allScalables[1]);
-    youtube = ScalableImageWidget(si: allScalables[2]);
-    instagram = ScalableImageWidget(si: allScalables[3]);
-    flutter = ScalableImageWidget(si: allScalables[4]);
-    blender = ScalableImageWidget(si: allScalables[5]);
-    figma = ScalableImageWidget(si: allScalables[6]);
-    firebase = ScalableImageWidget(si: allScalables[7]);
-    google_cloud = ScalableImageWidget(si: allScalables[8]);
-    graphql = ScalableImageWidget(si: allScalables[9]);
-    illustrator = ScalableImageWidget(si: allScalables[10]);
-    javascript = ScalableImageWidget(si: allScalables[11]);
-    mongodb = ScalableImageWidget(si: allScalables[12]);
-    mysql = ScalableImageWidget(si: allScalables[13]);
-    neo4j = ScalableImageWidget(si: allScalables[14]);
-    nodejs = ScalableImageWidget(si: allScalables[15]);
-    photoshop = ScalableImageWidget(si: allScalables[16]);
-    php = ScalableImageWidget(si: allScalables[17]);
-    react = ScalableImageWidget(si: allScalables[18]);
-    strapi = ScalableImageWidget(si: allScalables[19]);
-    typescript = ScalableImageWidget(si: allScalables[20]);
-    vue = ScalableImageWidget(si: allScalables[21]);
+    ];
+    linkedin = ScalableImageWidget.fromSISource(si: allScalables[0], cache: _svgCache);
+    github = ScalableImageWidget.fromSISource(si: allScalables[1], cache: _svgCache);
+    youtube = ScalableImageWidget.fromSISource(si: allScalables[2], cache: _svgCache);
+    instagram = ScalableImageWidget.fromSISource(si: allScalables[3], cache: _svgCache);
+    flutter = ScalableImageWidget.fromSISource(si: allScalables[4], cache: _svgCache);
+    blender = ScalableImageWidget.fromSISource(si: allScalables[5], cache: _svgCache);
+    figma = ScalableImageWidget.fromSISource(si: allScalables[6], cache: _svgCache);
+    firebase = ScalableImageWidget.fromSISource(si: allScalables[7], cache: _svgCache);
+    google_cloud = ScalableImageWidget.fromSISource(si: allScalables[8], cache: _svgCache);
+    graphql = ScalableImageWidget.fromSISource(si: allScalables[9], cache: _svgCache);
+    illustrator = ScalableImageWidget.fromSISource(si: allScalables[10], cache: _svgCache);
+    javascript = ScalableImageWidget.fromSISource(si: allScalables[11], cache: _svgCache);
+    mongodb = ScalableImageWidget.fromSISource(si: allScalables[12], cache: _svgCache);
+    mysql = ScalableImageWidget.fromSISource(si: allScalables[13], cache: _svgCache);
+    neo4j = ScalableImageWidget.fromSISource(si: allScalables[14], cache: _svgCache);
+    nodejs = ScalableImageWidget.fromSISource(si: allScalables[15], cache: _svgCache);
+    photoshop = ScalableImageWidget.fromSISource(si: allScalables[16], cache: _svgCache);
+    php = ScalableImageWidget.fromSISource(si: allScalables[17], cache: _svgCache);
+    react = ScalableImageWidget.fromSISource(si: allScalables[18], cache: _svgCache);
+    strapi = ScalableImageWidget.fromSISource(si: allScalables[19], cache: _svgCache);
+    typescript = ScalableImageWidget.fromSISource(si: allScalables[20], cache: _svgCache);
+    vue = ScalableImageWidget.fromSISource(si: allScalables[21], cache: _svgCache);
   }
 }
