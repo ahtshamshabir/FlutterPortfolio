@@ -53,30 +53,28 @@ class AppSocialHeader extends StatelessWidget with ThemeUtils {
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.linkedin,
+          child: SvgIcons.linkedin.toPng(),
         ),
         InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.github.copyWith(
-            color: colorScheme.onBackground,
-          ),
+          child: SvgIcons.github.toPng(),
         ),
         InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.youtube,
+          child: SvgIcons.youtube.toPng(),
         ),
         InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.instagram,
+          child: SvgIcons.instagram.toPng(),
         ),
       ],
     );

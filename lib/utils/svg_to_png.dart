@@ -32,8 +32,8 @@ Future<Uint8List> svgToPng(String svgPath, BuildContext context, {int? width, in
 
 Future<Uint8List> svgStringToPngBytes(
   // The SVG string
-  String svgPath,
-  BuildContext context, {
+  String svgPath, {
+  double devicePixelRatio = 2,
   // The target width of the output image
   int? width,
   // The target height of the output image
@@ -41,12 +41,11 @@ Future<Uint8List> svgStringToPngBytes(
 }) async {
   var svgString = await rootBundle.loadString(svgPath);
   final SvgStringLoader svgStringLoader = SvgStringLoader(svgString);
-  final PictureInfo pictureInfo = await vg.loadPicture(svgStringLoader, context);
+  final PictureInfo pictureInfo = await vg.loadPicture(svgStringLoader, null);
   String temp = svgString.substring(svgString.indexOf('height="') + 8);
   int svgHeight = height ?? int.parse(temp.substring(0, temp.indexOf('"')));
   temp = svgString.substring(svgString.indexOf('width="') + 7);
   int svgWidth = width ?? int.parse(temp.substring(0, temp.indexOf('"')));
-  var devicePixelRatio = context.getInheritedWidgetOfExactType<MediaQuery>()!.data.devicePixelRatio;
   svgWidth = svgWidth * devicePixelRatio.toInt();
   svgHeight = svgHeight * devicePixelRatio.toInt();
   print('svgWidth: $svgWidth, svgHeight: $svgHeight');

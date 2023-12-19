@@ -218,7 +218,7 @@ class SkillCard extends StatelessWidget with ThemeUtils {
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: icon,
+      child: icon.toPng(),
     );
   }
 }

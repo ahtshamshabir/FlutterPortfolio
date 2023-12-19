@@ -26,7 +26,7 @@ class IntroSection extends StatelessWidget with ThemeUtils {
             width: 200,
             child: FittedBox(
               child: FutureBuilder(
-                  future: svgStringToPngBytes('assets/icons/blender.svg', context),
+                  future: svgStringToPngBytes('assets/icons/blender.svg'),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Image.memory(snapshot.data!);
