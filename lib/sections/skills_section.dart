@@ -5,6 +5,7 @@ import 'package:flutter_portfolio/utils/svg_icons.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
 import 'package:flutter_portfolio/widgets/section_wrapper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jovial_svg/jovial_svg.dart';
 
 class SkillsSection extends StatelessWidget with ThemeUtils {
   SkillsSection({super.key});
@@ -203,7 +204,7 @@ var skillRecords = <SkillRecord>[
 ];
 
 class SkillCard extends StatelessWidget with ThemeUtils {
-  final SvgPicture icon;
+  final ScalableImageWidget icon;
   final String title;
   final EdgeInsetsGeometry? padding;
 

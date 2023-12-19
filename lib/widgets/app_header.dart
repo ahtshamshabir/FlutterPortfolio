@@ -60,9 +60,7 @@ class AppSocialHeader extends StatelessWidget with ThemeUtils {
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.github.copyWith(
-            color: colorScheme.onBackground,
-          ),
+          child: SvgIcons.github,
         ),
         InkWell(
           borderRadius: BorderRadius.circular(5),
