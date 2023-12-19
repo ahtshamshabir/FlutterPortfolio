@@ -48,7 +48,6 @@ Future<Uint8List> svgStringToPngBytes(
   int svgWidth = width ?? int.parse(temp.substring(0, temp.indexOf('"')));
   svgWidth = svgWidth * devicePixelRatio.toInt();
   svgHeight = svgHeight * devicePixelRatio.toInt();
-  print('svgWidth: $svgWidth, svgHeight: $svgHeight');
   final ui.Picture picture = pictureInfo.picture;
   final ui.PictureRecorder recorder = ui.PictureRecorder();
   final ui.Canvas canvas =

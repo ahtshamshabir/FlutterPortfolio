@@ -5,8 +5,24 @@ import 'package:flutter_portfolio/utils/svg_to_png.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 extension CopyWith on SvgPicture {
-  Image? toPng() {
-    return getPngFromCache(this);
+  Widget toPng() {
+    var pngBytes = getPngDataFromCache(this);
+    if (pngBytes == null) {
+      throw Exception('SvgPicture not found in cache');
+      return FutureBuilder(
+        future: svgStringToPngBytes(svgStringsMap[this]!),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var pngBytes = snapshot.data as Uint8List;
+            pngsMap[svgStringsMap[this]!] = pngBytes;
+            return Image.memory(pngBytes);
+          } else {
+            return Container();
+          }
+        },
+      );
+    }
+    return Image.memory(pngBytes);
   }
   SvgPicture copyWith({
     BytesLoader? bytesLoader,
@@ -113,7 +129,7 @@ Future cachePngs() async {
   }
 }
 
-Image? getPngFromCache(SvgPicture svgPicture) {
+Uint8List? getPngDataFromCache(SvgPicture svgPicture) {
   var svgString = svgStringsMap[svgPicture];
   if (svgString == null) {
     return null;
@@ -122,5 +138,5 @@ Image? getPngFromCache(SvgPicture svgPicture) {
   if (pngBytes == null) {
     return null;
   }
-  return Image.memory(pngBytes);
+  return pngBytes;
 }
