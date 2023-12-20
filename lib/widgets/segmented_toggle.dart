@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
 
 class SegmentedToggle<T> extends StatelessWidget {
@@ -13,19 +14,31 @@ class SegmentedToggle<T> extends StatelessWidget {
 
   int get index => children.keys.toList().indexOf(value);
 
-  double get leftOffset {
-    return initialPadding + (index * (28 + 14 + 15));
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var colorScheme = theme.colorScheme;
-    return IntrinsicHeight(
-      child: IntrinsicWidth(
-        child: Stack(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var containerPadding = 2.0;
+        var maxWidth = constraints.maxWidth - (containerPadding * 2);
+        var maxHeight = constraints.maxHeight - (containerPadding * 2);
+        var div = maxWidth / 8;
+        var iconDiv = div * 2;
+        var iconSize = 80.percentOf(iconDiv);
+        var iconPadding = 10.percentOf(iconDiv);
+        var spacing = div;
+        var leftOffset = containerPadding + (index * (div + spacing));
+        print('leftOffset: $leftOffset');
+        print('maxWidth: $maxWidth');
+        print('maxHeight: $maxHeight');
+        print('div: $div');
+        print('iconDiv: $iconDiv');
+        return Stack(
           children: [
             Ink(
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
               decoration: BoxDecoration(
                 color: colorScheme.surface,
                 borderRadius: BorderRadius.circular(30),
@@ -35,18 +48,24 @@ class SegmentedToggle<T> extends StatelessWidget {
               duration: duration,
               curve: curve,
               left: leftOffset,
-              bottom: initialPadding,
-              child: Ink(
-                height: 43,
-                width: 43,
-                decoration: BoxDecoration(
-                  color: colorScheme.background,
-                  borderRadius: BorderRadius.circular(30),
+              height: constraints.maxHeight,
+              width: iconDiv,
+              child: Container(
+                alignment: Alignment.center,
+                child: Ink(
+                  height: iconDiv,
+                  width: iconDiv,
+                  decoration: BoxDecoration(
+                    color: colorScheme.background,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(3),
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              padding: EdgeInsets.all(containerPadding),
               child: Row(
                 children: [
                   ...separateWidgets(
@@ -59,20 +78,22 @@ class SegmentedToggle<T> extends StatelessWidget {
                           curve: curve,
                           scale: entry.key == value ? 1 : 0.8,
                           child: Container(
-                            padding: const EdgeInsets.all(7),
-                            child: entry.value,
+                            height: iconSize,
+                            width: iconSize,
+                            padding: EdgeInsets.all(iconPadding),
+                            child: FittedBox(child: entry.value),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 15),
+                    SizedBox(width: spacing),
                   )
                 ],
               ),
             ),
           ],
-        ),
-      ),
+        );
+      }
     );
   }
 }

@@ -10,8 +10,10 @@ import 'package:flutter_portfolio/sections/projects_section.dart';
 import 'package:flutter_portfolio/sections/skills_section.dart';
 import 'package:flutter_portfolio/sections/work_section.dart';
 import 'package:flutter_portfolio/themes/theme_mode_provider.dart';
+import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/responsive_system.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
+import 'package:flutter_portfolio/utils/theme_utils.dart';
 import 'package:flutter_portfolio/widgets/app_header.dart';
 import 'package:flutter_portfolio/widgets/navbar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,66 +42,77 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
+  double get pageViewMargin {
+    if (deviceSizeType.isDesktop) {
+      return 10.percentOf(deviceSize.width);
+    } else {
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-          backgroundColor: theme.colorScheme.background,
-          body: Shortcuts(
-            shortcuts: {
-              LogicalKeySet(LogicalKeyboardKey.arrowUp): const ScrollIntent(direction: AxisDirection.up),
-              LogicalKeySet(LogicalKeyboardKey.arrowDown): const ScrollIntent(direction: AxisDirection.down),
-            },
-            child: Actions(
-              actions: {
-                ScrollIntent: CallbackAction<ScrollIntent>(
-                  onInvoke: (intent) {
-                    if (intent.direction == AxisDirection.down) {
-                      if (currentPage < totalPages - 1) {
-                        controller.animateToPage(
-                          ++currentPage,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.ease,
-                        );
-                      }
-                    } else if (intent.direction == AxisDirection.up) {
-                      if (currentPage > 0) {
-                        controller.animateToPage(
-                          --currentPage,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.ease,
-                        );
-                      }
+    return LayoutBuilder(builder: (context, constraints) {
+      print('deviceSizeType: $deviceSizeType');
+      print('deviceSize: $deviceSize');
+      return Scaffold(
+        backgroundColor: theme.colorScheme.background,
+        body: Shortcuts(
+          shortcuts: {
+            LogicalKeySet(LogicalKeyboardKey.arrowUp): const ScrollIntent(direction: AxisDirection.up),
+            LogicalKeySet(LogicalKeyboardKey.arrowDown): const ScrollIntent(direction: AxisDirection.down),
+          },
+          child: Actions(
+            actions: {
+              ScrollIntent: CallbackAction<ScrollIntent>(
+                onInvoke: (intent) {
+                  if (intent.direction == AxisDirection.down) {
+                    if (currentPage < totalPages - 1) {
+                      controller.animateToPage(
+                        ++currentPage,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.ease,
+                      );
                     }
-                    return null;
-                  },
-                ),
-              },
-              child: Focus(
-                autofocus: true,
-                child: Stack(
-                  children: [
-                    Row(
-                      children: [
-                        AppNavbar(controller: controller),
-                        Expanded(
-                          child: HomepageSections(
-                            controller: controller,
-                          ),
-                        ),
-                      ],
+                  } else if (intent.direction == AxisDirection.up) {
+                    if (currentPage > 0) {
+                      controller.animateToPage(
+                        --currentPage,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.ease,
+                      );
+                    }
+                  }
+                  return null;
+                },
+              ),
+            },
+            child: Focus(
+              autofocus: true,
+              child: Stack(
+                children: [
+                  if (deviceSizeType.isDesktop)
+                    Container(
+                      key: const ValueKey('navbar'),
+                      alignment: Alignment.centerLeft,
+                      child: AppNavbar(controller: controller),
                     ),
-                    AppHeader(),
-                  ],
-                ),
+                  Container(
+                    key: const ValueKey('pageView'),
+                    margin: EdgeInsets.only(left: pageViewMargin),
+                    child: HomepageSections(
+                      controller: controller,
+                    ),
+                  ),
+                  AppHeader(),
+                ],
               ),
             ),
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }
 
@@ -110,31 +123,28 @@ class HomepageSections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPageView(
-      scrollDirection: Axis.vertical,
-      controller: controller,
-      children: [
-        IntroSection(),
-        // DevicesSection(),
-        WorkSection(),
-        SkillsSection(),
-        ProjectsSection(),
-        ContactSection(),
-      ],
-    );
-    return PageView(
-      scrollDirection: Axis.vertical,
-      physics: const CustomPageViewScrollPhysics(),
-      controller: controller,
-      children: [
-        IntroSection(),
-        // DevicesSection(),
-        WorkSection(),
-        SkillsSection(),
-        ProjectsSection(),
-        ContactSection(),
-      ],
-    );
+    var children = [
+      IntroSection(key: const ValueKey('intro')),
+      // DevicesSection(),
+      WorkSection(key: const ValueKey('work')),
+      SkillsSection(key: const ValueKey('skills')),
+      ProjectsSection(key: const ValueKey('projects')),
+      ContactSection(key: const ValueKey('contact')),
+    ];
+    if (deviceSizeType.isDesktop) {
+      return CustomPageView(
+        scrollDirection: Axis.vertical,
+        controller: controller,
+        duration: const Duration(milliseconds: 500),
+        children: children,
+      );
+    } else {
+      return PageView(
+        scrollDirection: Axis.vertical,
+        controller: controller,
+        children: children,
+      );
+    }
   }
 }
 
@@ -142,8 +152,15 @@ class CustomPageView extends StatefulWidget {
   final Axis scrollDirection;
   final PageController controller;
   final List<Widget> children;
+  final Duration duration;
 
-  const CustomPageView({super.key, required this.scrollDirection, required this.controller, required this.children});
+  const CustomPageView({
+    super.key,
+    required this.scrollDirection,
+    required this.controller,
+    required this.children,
+    this.duration = const Duration(milliseconds: 500),
+  });
 
   @override
   State<CustomPageView> createState() => _CustomPageViewState();
@@ -169,7 +186,7 @@ class _CustomPageViewState extends State<CustomPageView> {
     var isScrolling = controller.position.isScrollingNotifier.value;
 
     if (!isScrolling) {
-      timer = Timer(const Duration(milliseconds: 500), () {
+      timer = Timer(widget.duration, () {
         var page = controller.page?.round() ?? 0;
         controller.animateToPage(
           page,
@@ -225,10 +242,10 @@ class CustomPageViewScrollPhysics extends ScrollPhysics {
       );
 }
 
-class AppNavbar extends StatelessWidget {
+class AppNavbar extends StatelessWidget with MediaQueryReadUtils {
   final PageController controller;
 
-  const AppNavbar({super.key, required this.controller});
+  AppNavbar({super.key, required this.controller});
 
   goToPage(int index) {
     controller.animateToPage(
@@ -250,56 +267,64 @@ class AppNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var page = 0;
+    initQueryRead(context);
+    var width = 10.percentOf(deviceSize.width);
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
-        return Navbar(
-          currentIndex: currentIndex,
-          items: [
-            NavItem(
-              title: 'Intro',
-              icon: Icons.person,
-              onPressed: () {
-                goToPage(0);
-              },
-            ),
-            // NavItem(
-            //   title: 'Scroll animation',
-            //   icon: Icons.devices,
-            //   onPressed: () {
-            //     goToPage(1);
-            //   },
-            // ),
-            NavItem(
-              title: 'Experience',
-              icon: Icons.work,
-              onPressed: () {
-                goToPage(1);
-              },
-            ),
-            NavItem(
-              title: 'Skills',
-              icon: Icons.assignment,
-              onPressed: () {
-                goToPage(2);
-              },
-            ),
-            NavItem(
-              title: 'Projects',
-              icon: Icons.assignment_turned_in,
-              onPressed: () {
-                goToPage(3);
-              },
-            ),
-            NavItem(
-              title: 'Projects',
-              icon: Icons.send,
-              onPressed: () {
-                goToPage(4);
-              },
-            ),
-          ],
+        return Container(
+          margin: const EdgeInsets.only(left: 20),
+          width: width,
+          child: Navbar(
+            currentIndex: currentIndex,
+            padding: EdgeInsets.all(10.percentOf(width)),
+            iconSize: 60.percentOf(width),
+            iconPadding: EdgeInsets.all(10.percentOf(width)),
+            items: [
+              NavItem(
+                title: 'Intro',
+                icon: Icons.person,
+                onPressed: () {
+                  goToPage(0);
+                },
+              ),
+              // NavItem(
+              //   title: 'Scroll animation',
+              //   icon: Icons.devices,
+              //   onPressed: () {
+              //     goToPage(1);
+              //   },
+              // ),
+              NavItem(
+                title: 'Experience',
+                icon: Icons.work,
+                onPressed: () {
+                  goToPage(1);
+                },
+              ),
+              NavItem(
+                title: 'Skills',
+                icon: Icons.assignment,
+                onPressed: () {
+                  goToPage(2);
+                },
+              ),
+              NavItem(
+                title: 'Projects',
+                icon: Icons.assignment_turned_in,
+                onPressed: () {
+                  goToPage(3);
+                },
+              ),
+              NavItem(
+                title: 'Projects',
+                icon: Icons.send,
+                onPressed: () {
+                  goToPage(4);
+                },
+              ),
+            ],
+          ),
         );
       },
     );

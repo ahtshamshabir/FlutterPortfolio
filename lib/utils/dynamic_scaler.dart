@@ -1,45 +1,54 @@
 // iphone 14 screen size 844 x 390
 import 'package:flutter/material.dart';
-import 'package:flutter_portfolio/utils/responsive_system.dart';
 
 enum DeviceSizeType {
-  small,
-  medium,
-  large,
-  xlarge,
+  desktopSmall,
+  desktopMedium,
+  desktopLarge,
+  desktopXLarge,
+  mobileSmall,
+  mobileMedium,
+  mobileLarge,
   ;
 
-  bool get isSmall => this == DeviceSizeType.small;
+  bool get isDesktopSmall => this == DeviceSizeType.desktopSmall;
 
-  bool get isMedium => this == DeviceSizeType.medium;
+  bool get isDesktopMedium => this == DeviceSizeType.desktopMedium;
 
-  bool get isLarge => this == DeviceSizeType.large;
+  bool get isDesktopLarge => this == DeviceSizeType.desktopLarge;
 
-  bool get isXLarge => this == DeviceSizeType.xlarge;
+  bool get isDesktopXLarge => this == DeviceSizeType.desktopXLarge;
+
+  bool get isMobileSmall => this == DeviceSizeType.mobileSmall;
+
+  bool get isMobileMedium => this == DeviceSizeType.mobileMedium;
+
+  bool get isMobileLarge => this == DeviceSizeType.mobileLarge;
+
+  bool get isDesktop => isDesktopSmall || isDesktopMedium || isDesktopLarge || isDesktopXLarge;
+
+  bool get isMobile => isMobileSmall || isMobileMedium || isMobileLarge;
 }
 
-double referenceHeight = 844;
-double referenceWidth = 393;
+Size deviceSize = const Size(0, 0), referenceSize = const Size(1728, 918);
 
-double deviceHeight = 0;
-double deviceWidth = 0;
-
-DeviceSizeType deviceSizeType = DeviceSizeType.medium;
+DeviceSizeType deviceSizeType = DeviceSizeType.desktopMedium;
 
 var breakPointsMap = {
-  DeviceSizeType.xlarge: 2560,
-  DeviceSizeType.large: 1728,
-  DeviceSizeType.medium: 1329,
-  DeviceSizeType.small: 1000,
+  DeviceSizeType.desktopXLarge: 2560,
+  DeviceSizeType.desktopLarge: 1728,
+  DeviceSizeType.desktopMedium: 1329,
+  DeviceSizeType.desktopSmall: 1000,
+  DeviceSizeType.mobileLarge: 430,
+  DeviceSizeType.mobileMedium: 375,
+  DeviceSizeType.mobileSmall: 320,
 };
 
 void setDeviceSize(Size size) {
-  deviceHeight = size.height;
-  deviceWidth = size.width;
   deviceSize = size;
 
   for (var item in breakPointsMap.entries) {
-    if (deviceWidth < item.value) {
+    if (deviceSize.width < item.value) {
       deviceSizeType = item.key;
     }
   }
@@ -47,9 +56,9 @@ void setDeviceSize(Size size) {
 
 TextStyle scaleFont(TextStyle textTheme) {
   double fontSize = textTheme.fontSize ?? 16;
-  if (deviceSizeType == DeviceSizeType.small) {
+  if (deviceSizeType == DeviceSizeType.desktopSmall) {
     return textTheme.copyWith(fontSize: fontSize - 3);
-  } else if (deviceSizeType == DeviceSizeType.medium) {
+  } else if (deviceSizeType == DeviceSizeType.desktopMedium) {
     return textTheme.copyWith(fontSize: fontSize);
   } else {
     return textTheme.copyWith(fontSize: fontSize + 2);
@@ -57,19 +66,19 @@ TextStyle scaleFont(TextStyle textTheme) {
 }
 
 double scaleWrtHeight(double unit) {
-  return (unit * deviceHeight) / referenceHeight;
+  return (unit * deviceSize.height) / referenceSize.height;
 }
 
 double scaleWrtWidth(double unit) {
-  return (unit * deviceWidth) / referenceWidth;
+  return (unit * deviceSize.width) / referenceSize.width;
 }
 
 double viewWidth(double percent) {
-  return (percent / 100) * deviceWidth;
+  return (percent / 100) * deviceSize.width;
 }
 
 double viewHeight(double percent) {
-  return (percent / 100) * deviceHeight;
+  return (percent / 100) * deviceSize.height;
 }
 
 extension DynamicScaler on num {

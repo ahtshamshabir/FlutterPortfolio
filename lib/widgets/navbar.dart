@@ -4,17 +4,26 @@ import 'package:flutter_portfolio/utils/separate_widgets.dart';
 class Navbar extends StatelessWidget {
   List<NavItem> items;
   int currentIndex;
+  double iconSize;
+  EdgeInsetsGeometry? iconPadding, padding;
 
-  Navbar({super.key, required this.currentIndex, this.items = const []});
+  Navbar({
+    super.key,
+    required this.currentIndex,
+    this.items = const [],
+    this.iconSize = 60,
+    this.iconPadding,
+    this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var colorScheme = theme.colorScheme;
-    return Container(
-      margin: const EdgeInsets.only(left: 20),
+    return Material(
+      color: Colors.transparent,
       child: Ink(
-        padding: const EdgeInsets.all(10),
+        padding: padding ?? const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: colorScheme.surface,
           borderRadius: BorderRadius.circular(30),
@@ -31,7 +40,6 @@ class Navbar extends StatelessWidget {
                     child: Tooltip(
                       message: items[i].title,
                       textStyle: theme.textTheme.bodySmall!.copyWith(color: colorScheme.onBackground),
-                      margin: const EdgeInsets.only(left: 130),
                       verticalOffset: 0,
                       decoration: ShapeDecoration(
                         color: colorScheme.background,
@@ -41,16 +49,19 @@ class Navbar extends StatelessWidget {
                         ),
                       ),
                       waitDuration: const Duration(milliseconds: 0),
-                      child: Ink(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: i == currentIndex ? colorScheme.background : null,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Icon(
-                          items[i].icon,
-                          color: colorScheme.onBackground,
-                          size: 60,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Ink(
+                          padding: iconPadding ?? const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: i == currentIndex ? colorScheme.background : null,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Icon(
+                            items[i].icon,
+                            color: colorScheme.onBackground,
+                            size: iconSize,
+                          ),
                         ),
                       ),
                     ),

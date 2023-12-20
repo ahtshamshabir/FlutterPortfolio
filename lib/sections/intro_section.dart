@@ -8,60 +8,85 @@ import 'package:flutter_portfolio/utils/theme_utils.dart';
 
 import '../utils/responsive_system.dart';
 
-class IntroSection extends StatelessWidget with ThemeUtils, MediaQueryReadUtils {
+const avatarSizeMap = <DeviceSizeType, double>{
+  DeviceSizeType.desktopSmall: 60,
+  DeviceSizeType.desktopMedium: 35,
+  DeviceSizeType.desktopLarge: 34,
+  DeviceSizeType.desktopXLarge: 34,
+  DeviceSizeType.mobileLarge: 70,
+  DeviceSizeType.mobileMedium: 70,
+  DeviceSizeType.mobileSmall: 70,
+};
+
+const infoAlignmentMap = <DeviceSizeType, Alignment>{
+  DeviceSizeType.desktopSmall: Alignment(-1, -0.8),
+  DeviceSizeType.desktopMedium: Alignment(-1, -0.6),
+  DeviceSizeType.desktopLarge: Alignment.centerLeft,
+  DeviceSizeType.desktopXLarge: Alignment.centerLeft,
+  DeviceSizeType.mobileLarge: Alignment(-1, -0.5),
+  DeviceSizeType.mobileMedium: Alignment(-1, -0.5),
+  DeviceSizeType.mobileSmall: Alignment(-1, -0.5),
+};
+
+const avatarAlignmentMap = <DeviceSizeType, Alignment>{
+  DeviceSizeType.desktopSmall: Alignment(1, 1),
+  DeviceSizeType.desktopMedium: Alignment(1, 1),
+  DeviceSizeType.desktopLarge: Alignment.centerRight,
+  DeviceSizeType.desktopXLarge: Alignment.centerRight,
+  DeviceSizeType.mobileLarge: Alignment(1, 1),
+  DeviceSizeType.mobileMedium: Alignment(1, 1),
+  DeviceSizeType.mobileSmall: Alignment(1, 1),
+};
+
+class IntroSection extends StatelessWidget with ThemeUtils {
   IntroSection({super.key});
 
   Alignment get infoAlignment {
-    if(deviceSizeType.isSmall) {
-      return const Alignment(-1, -0.7);
-    }
-    else if(deviceSizeType.isMedium) {
-      return const Alignment(-1, -0.6);
-    }
-    else {
-      return Alignment.centerLeft;
-    }
+    return infoAlignmentMap[deviceSizeType]!;
   }
 
   Alignment get avatarAlignment {
-    if(deviceSizeType.isSmall) {
-      return const Alignment(1, 0.8);
-    }
-    else if(deviceSizeType.isMedium) {
-      return const Alignment(1, 0.6);
-    }
-    else {
-      return Alignment.centerRight;
-    }
+    return avatarAlignmentMap[deviceSizeType]!;
   }
 
   double get avatarSize {
-    if(deviceSizeType.isSmall) {
-      return 70.vw;
-    }else if(deviceSizeType.isMedium) {
-      return 50.vw;
+    return avatarSizeMap[deviceSizeType]!.vw;
+  }
+
+  double get infoSectionMargin {
+    if (deviceSizeType.isMobile) {
+      return 30;
+    } else {
+      return 0;
     }
-    else {
-      return 34.vw;
+  }
+
+  double get verticalPadding {
+    if (deviceSizeType.isDesktop) {
+      return 17.vh;
+    } else {
+      return 5.vh;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    initQueryRead(context);
     return Ink(
       height: double.infinity,
       width: double.infinity,
       color: colorScheme.background,
-      padding: EdgeInsets.only(left: 5.2.vw, right: 7.vw, top: 120, bottom: 120),
+      padding: EdgeInsets.only(left: 3.vw, right: 7.vw, top: verticalPadding, bottom: verticalPadding),
       child: Stack(
         children: [
-          AnimatedAlign(
+          AnimatedContainer(
             alignment: infoAlignment,
             duration: const Duration(milliseconds: 500),
+            margin: EdgeInsets.only(right: infoSectionMargin),
             curve: Curves.ease,
-            child: InfoSection(),
+            child: FittedBox(
+              child: InfoSection(),
+            ),
           ),
           AnimatedAlign(
             alignment: avatarAlignment,
@@ -89,14 +114,14 @@ class InfoSection extends StatelessWidget with ThemeUtils {
       children: [
         Text(
           '''Column(
-  children: [''',
+ children: [''',
           style: textTheme.bodyLarge!.copyWith(
             fontFamily: FontFamily.sourceCodePro,
             color: colorScheme.onBackground.withOpacity(0.25),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 60),
+          padding: const EdgeInsets.only(left: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -139,7 +164,7 @@ class InfoSection extends StatelessWidget with ThemeUtils {
           ),
         ),
         Text(
-          '''  ],
+          ''' ],
 );''',
           style: textTheme.bodyLarge?.copyWith(
             fontFamily: FontFamily.sourceCodePro,

@@ -8,10 +8,18 @@ import 'package:flutter_portfolio/widgets/header_download_button.dart';
 import 'package:flutter_portfolio/widgets/social_header.dart';
 
 class AppHeader extends StatelessWidget {
+  double get paddingTop {
+    if (deviceSizeType.isDesktop) {
+      return 40;
+    } else {
+      return 10;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 40),
+      margin: EdgeInsets.only(top: paddingTop),
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -20,7 +28,7 @@ class AppHeader extends StatelessWidget {
               flex: 43,
               child: SizedBox(width: double.infinity),
             ),
-            AppSocialHeader(),
+            if (deviceSizeType.isDesktop) AppSocialHeader(),
             const Flexible(
               flex: 1,
               child: SizedBox(width: double.infinity),

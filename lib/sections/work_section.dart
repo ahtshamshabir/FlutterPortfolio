@@ -31,6 +31,11 @@ class _WorkSectionState extends State<WorkSection> with ThemeUtils {
 
   int get totalPages => workExperiences.length;
 
+  double get padding {
+    if(deviceSizeType.isDesktop) return 20;
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
@@ -40,7 +45,7 @@ class _WorkSectionState extends State<WorkSection> with ThemeUtils {
         alignment: Alignment.center,
         child: Container(
           height: double.infinity,
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+          padding: EdgeInsets.all(padding),
           child: Column(
             children: [
               SizedBox(height: 2.vw),
@@ -204,20 +209,25 @@ class WorkExperienceSection extends StatelessWidget with ThemeUtils {
         children: [
           Row(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: textTheme.headlineLarge,
+              Expanded(
+                child: FittedBox(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: textTheme.headlineLarge,
+                      ),
+                      Text(
+                        '$company ($duration)',
+                        style: textTheme.bodyLarge,
+                      ),
+                    ],
                   ),
-                  Text(
-                    '$company ($duration)',
-                    style: textTheme.bodyLarge,
-                  ),
-                ],
+                ),
               ),
               const Spacer(),
+              if(deviceSizeType.isDesktop)
               SizedBox(
                 width: 18.vw,
                 child: SkillsWidget(

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_portfolio/models/breakpoint.dart';
+import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 
 var breakpoints = [
   Breakpoint(type: BreakpointType.scale, maxWidth: 2560),
@@ -10,8 +11,6 @@ var breakpoints = [
   Breakpoint(type: BreakpointType.scale, maxWidth: 1000),
 ];
 
-Size deviceSize = const Size(0, 0),
-    referenceSize = const Size(1728, 918);
 
 double getResponsiveWidth(double width) {
   var currentIndex = 0;
