@@ -6,6 +6,8 @@ import 'package:flutter_portfolio/utils/svg_icons.dart';
 import 'package:flutter_portfolio/utils/svg_to_png.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
 
+import '../utils/responsive_system.dart';
+
 class IntroSection extends StatelessWidget with ThemeUtils {
   IntroSection({super.key});
 
@@ -32,6 +34,10 @@ class InfoSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
+    var deviceSize = MediaQuery.of(context).size;
+    var resWidth = getResponsiveWidth(100);
+    print('resWidth: $resWidth');
+    print('deviceSize: $deviceSize');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +55,7 @@ class InfoSection extends StatelessWidget with ThemeUtils {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text('Raja', style: TextStyle(fontSize: resWidth)),
               RichText(
                 text: TextSpan(
                   children: [

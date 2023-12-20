@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_portfolio/sections/contact_section.dart';
 import 'package:flutter_portfolio/sections/devices_section.dart';
 import 'package:flutter_portfolio/sections/intro_section.dart';
@@ -6,6 +10,7 @@ import 'package:flutter_portfolio/sections/projects_section.dart';
 import 'package:flutter_portfolio/sections/skills_section.dart';
 import 'package:flutter_portfolio/sections/work_section.dart';
 import 'package:flutter_portfolio/themes/theme_mode_provider.dart';
+import 'package:flutter_portfolio/utils/responsive_system.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
 import 'package:flutter_portfolio/widgets/app_header.dart';
 import 'package:flutter_portfolio/widgets/navbar.dart';
@@ -22,6 +27,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   var controller = PageController();
+  int currentPage = 0, totalPages = 5;
 
   @override
   initState() {
@@ -39,20 +45,55 @@ class _HomepageState extends State<Homepage> {
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
-      body: Stack(
-        children: [
-          Row(
-            children: [
-              AppNavbar(controller: controller),
-              Expanded(
-                child: HomepageSections(
-                  controller: controller,
+      body: Shortcuts(
+        shortcuts: {
+          LogicalKeySet(LogicalKeyboardKey.arrowUp): const ScrollIntent(direction: AxisDirection.up),
+          LogicalKeySet(LogicalKeyboardKey.arrowDown): const ScrollIntent(direction: AxisDirection.down),
+        },
+        child: Actions(
+          actions: {
+            ScrollIntent: CallbackAction<ScrollIntent>(
+              onInvoke: (intent) {
+                if (intent.direction == AxisDirection.down) {
+                  if (currentPage < totalPages - 1) {
+                    controller.animateToPage(
+                      ++currentPage,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.ease,
+                    );
+                  }
+                } else if (intent.direction == AxisDirection.up) {
+                  if (currentPage > 0) {
+                    controller.animateToPage(
+                      --currentPage,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.ease,
+                    );
+                  }
+                }
+                return null;
+              },
+            ),
+          },
+          child: Focus(
+            autofocus: true,
+            child: Stack(
+              children: [
+                Row(
+                  children: [
+                    AppNavbar(controller: controller),
+                    Expanded(
+                      child: HomepageSections(
+                        controller: controller,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                AppHeader(),
+              ],
+            ),
           ),
-          AppHeader(),
-        ],
+        ),
       ),
     );
   }
@@ -65,37 +106,17 @@ class HomepageSections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var deviceSize = MediaQuery.of(context).size;
-    var test = SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            height: deviceSize.height,
-            width: deviceSize.width,
-            child: IntroSection(),
-          ),
-          Container(
-            height: deviceSize.height,
-            width: deviceSize.width,
-            child: WorkSection(),
-          ),
-          Container(
-            height: deviceSize.height,
-            width: deviceSize.width,
-            child: SkillsSection(),
-          ),
-          Container(
-            height: deviceSize.height,
-            width: deviceSize.width,
-            child: ProjectsSection(),
-          ),
-          Container(
-            height: deviceSize.height,
-            width: deviceSize.width,
-            child: ContactSection(),
-          ),
-        ]
-      ),
+    return CustomPageView(
+      scrollDirection: Axis.vertical,
+      controller: controller,
+      children: [
+        IntroSection(),
+        // DevicesSection(),
+        WorkSection(),
+        SkillsSection(),
+        ProjectsSection(),
+        ContactSection(),
+      ],
     );
     return PageView(
       scrollDirection: Axis.vertical,
@@ -109,6 +130,77 @@ class HomepageSections extends StatelessWidget {
         ProjectsSection(),
         ContactSection(),
       ],
+    );
+  }
+}
+
+class CustomPageView extends StatefulWidget {
+  final Axis scrollDirection;
+  final PageController controller;
+  final List<Widget> children;
+
+  const CustomPageView({super.key, required this.scrollDirection, required this.controller, required this.children});
+
+  @override
+  State<CustomPageView> createState() => _CustomPageViewState();
+}
+
+class _CustomPageViewState extends State<CustomPageView> {
+  late PageController controller;
+  Timer? timer;
+  PanGestureRecognizer _gestureRecognizer = PanGestureRecognizer();
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        controller.position.isScrollingNotifier.addListener(snapToPage);
+      },
+    );
+  }
+
+  snapToPage() {
+    var isScrolling = controller.position.isScrollingNotifier.value;
+
+    if (!isScrolling) {
+      timer = Timer(const Duration(milliseconds: 500), () {
+        var page = controller.page?.round() ?? 0;
+        controller.animateToPage(
+          page,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      });
+    } else {
+      timer?.cancel();
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.position.isScrollingNotifier.removeListener(snapToPage);
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: widget.scrollDirection,
+      controller: widget.controller,
+      child: Column(
+        children: [
+          ...widget.children.map(
+            (child) => Container(
+              height: deviceSize.height,
+              width: deviceSize.width,
+              child: child,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -151,7 +243,6 @@ class AppNavbar extends StatelessWidget {
   }
 
   VoidCallback bindPageCallback(int page) => () => goToPage(page);
-
 
   @override
   Widget build(BuildContext context) {

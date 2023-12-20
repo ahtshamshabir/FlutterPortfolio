@@ -1,5 +1,6 @@
 // iphone 14 screen size 844 x 390
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/utils/responsive_system.dart';
 
 enum DeviceSize { small, medium, large }
 
@@ -9,26 +10,27 @@ double referenceWidth = 393;
 double deviceHeight = 0;
 double deviceWidth = 0;
 
-DeviceSize deviceSize = DeviceSize.medium;
+DeviceSize deviceSizeOld = DeviceSize.medium;
 
 void setDeviceSize(Size size) {
   deviceHeight = size.height;
   deviceWidth = size.width;
+  deviceSize = size;
 
   if (deviceHeight < 700) {
-    deviceSize = DeviceSize.small;
+    deviceSizeOld = DeviceSize.small;
   } else if (deviceHeight > 900) {
-    deviceSize = DeviceSize.large;
+    deviceSizeOld = DeviceSize.large;
   } else {
-    deviceSize = DeviceSize.medium;
+    deviceSizeOld = DeviceSize.medium;
   }
 }
 
 TextStyle scaleFont(TextStyle textTheme) {
   double fontSize = textTheme.fontSize ?? 16;
-  if (deviceSize == DeviceSize.small) {
+  if (deviceSizeOld == DeviceSize.small) {
     return textTheme.copyWith(fontSize: fontSize - 3);
-  } else if (deviceSize == DeviceSize.medium) {
+  } else if (deviceSizeOld == DeviceSize.medium) {
     return textTheme.copyWith(fontSize: fontSize);
   } else {
     return textTheme.copyWith(fontSize: fontSize + 2);
