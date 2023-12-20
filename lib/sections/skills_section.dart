@@ -13,7 +13,6 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SectionWrapper(
-      padding: EdgeInsets.symmetric(horizontal: 5.vw, vertical: 4.vw),
       child: Align(
         alignment: Alignment.center,
         child: Container(

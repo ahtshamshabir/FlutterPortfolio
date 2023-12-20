@@ -35,7 +35,7 @@ class _WorkSectionState extends State<WorkSection> with ThemeUtils {
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SectionWrapper(
-      padding: EdgeInsets.symmetric(vertical: 4.vw),
+      padding: EdgeInsets.symmetric(vertical: 120),
       child: Align(
         alignment: Alignment.center,
         child: Container(

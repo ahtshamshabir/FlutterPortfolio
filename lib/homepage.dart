@@ -43,58 +43,62 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.colorScheme.background,
-      body: Shortcuts(
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.arrowUp): const ScrollIntent(direction: AxisDirection.up),
-          LogicalKeySet(LogicalKeyboardKey.arrowDown): const ScrollIntent(direction: AxisDirection.down),
-        },
-        child: Actions(
-          actions: {
-            ScrollIntent: CallbackAction<ScrollIntent>(
-              onInvoke: (intent) {
-                if (intent.direction == AxisDirection.down) {
-                  if (currentPage < totalPages - 1) {
-                    controller.animateToPage(
-                      ++currentPage,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.ease,
-                    );
-                  }
-                } else if (intent.direction == AxisDirection.up) {
-                  if (currentPage > 0) {
-                    controller.animateToPage(
-                      --currentPage,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.ease,
-                    );
-                  }
-                }
-                return null;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scaffold(
+          backgroundColor: theme.colorScheme.background,
+          body: Shortcuts(
+            shortcuts: {
+              LogicalKeySet(LogicalKeyboardKey.arrowUp): const ScrollIntent(direction: AxisDirection.up),
+              LogicalKeySet(LogicalKeyboardKey.arrowDown): const ScrollIntent(direction: AxisDirection.down),
+            },
+            child: Actions(
+              actions: {
+                ScrollIntent: CallbackAction<ScrollIntent>(
+                  onInvoke: (intent) {
+                    if (intent.direction == AxisDirection.down) {
+                      if (currentPage < totalPages - 1) {
+                        controller.animateToPage(
+                          ++currentPage,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.ease,
+                        );
+                      }
+                    } else if (intent.direction == AxisDirection.up) {
+                      if (currentPage > 0) {
+                        controller.animateToPage(
+                          --currentPage,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.ease,
+                        );
+                      }
+                    }
+                    return null;
+                  },
+                ),
               },
-            ),
-          },
-          child: Focus(
-            autofocus: true,
-            child: Stack(
-              children: [
-                Row(
+              child: Focus(
+                autofocus: true,
+                child: Stack(
                   children: [
-                    AppNavbar(controller: controller),
-                    Expanded(
-                      child: HomepageSections(
-                        controller: controller,
-                      ),
+                    Row(
+                      children: [
+                        AppNavbar(controller: controller),
+                        Expanded(
+                          child: HomepageSections(
+                            controller: controller,
+                          ),
+                        ),
+                      ],
                     ),
+                    AppHeader(),
                   ],
                 ),
-                AppHeader(),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 }

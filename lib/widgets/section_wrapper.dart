@@ -13,7 +13,7 @@ class SectionWrapper extends StatelessWidget with ThemeUtils {
         height: double.infinity,
         width: double.infinity,
         color: colorScheme.background,
-        padding: padding ?? EdgeInsets.all(5.vw),
+        padding: padding ?? EdgeInsets.symmetric(horizontal:5.vw, vertical: 120),
     child: child,
     );
   }

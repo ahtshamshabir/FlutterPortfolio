@@ -14,6 +14,6 @@ class Breakpoint {
 }
 
 enum BreakpointType {
-  resize,
+  pause,
   scale,
 }

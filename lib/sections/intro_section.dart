@@ -8,22 +8,71 @@ import 'package:flutter_portfolio/utils/theme_utils.dart';
 
 import '../utils/responsive_system.dart';
 
-class IntroSection extends StatelessWidget with ThemeUtils {
+class IntroSection extends StatelessWidget with ThemeUtils, MediaQueryReadUtils {
   IntroSection({super.key});
+
+  Alignment get infoAlignment {
+    if(deviceSizeType.isSmall) {
+      return const Alignment(-1, -0.7);
+    }
+    else if(deviceSizeType.isMedium) {
+      return const Alignment(-1, -0.6);
+    }
+    else {
+      return Alignment.centerLeft;
+    }
+  }
+
+  Alignment get avatarAlignment {
+    if(deviceSizeType.isSmall) {
+      return const Alignment(1, 0.8);
+    }
+    else if(deviceSizeType.isMedium) {
+      return const Alignment(1, 0.6);
+    }
+    else {
+      return Alignment.centerRight;
+    }
+  }
+
+  double get avatarSize {
+    if(deviceSizeType.isSmall) {
+      return 70.vw;
+    }else if(deviceSizeType.isMedium) {
+      return 50.vw;
+    }
+    else {
+      return 34.vw;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
+    initQueryRead(context);
     return Ink(
       height: double.infinity,
       width: double.infinity,
       color: colorScheme.background,
-      padding: const EdgeInsets.only(left: 100, right: 150),
-      child: Row(
+      padding: EdgeInsets.only(left: 5.2.vw, right: 7.vw, top: 120, bottom: 120),
+      child: Stack(
         children: [
-          InfoSection(),
-          const Spacer(),
-          AvatarSection(),
+          AnimatedAlign(
+            alignment: infoAlignment,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+            child: InfoSection(),
+          ),
+          AnimatedAlign(
+            alignment: avatarAlignment,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+            child: Container(
+              height: avatarSize,
+              width: avatarSize,
+              child: AvatarSection(),
+            ),
+          ),
         ],
       ),
     );
@@ -34,13 +83,9 @@ class InfoSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    var deviceSize = MediaQuery.of(context).size;
-    var resWidth = getResponsiveWidth(100);
-    print('resWidth: $resWidth');
-    print('deviceSize: $deviceSize');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           '''Column(
@@ -55,7 +100,6 @@ class InfoSection extends StatelessWidget with ThemeUtils {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Raja', style: TextStyle(fontSize: resWidth)),
               RichText(
                 text: TextSpan(
                   children: [
@@ -113,79 +157,73 @@ class AvatarSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    return Container(
-      height: 34.vw,
-      width: 34.vw,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            height: 28.vw,
-            width: 28.vw,
-            padding: EdgeInsets.all(3.vw),
-            decoration: BoxDecoration(
-              color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(20.vw),
-            ),
-            child: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/flutter-dash.png'),
-                  fit: BoxFit.cover,
+    return LayoutBuilder(
+      builder: (context, constaints) {
+        var maxWidth = constaints.maxWidth;
+        var maxHeight = constaints.maxHeight;
+        return Container(
+          height: maxHeight,
+          width: maxWidth,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height: 82.percentOf(maxWidth),
+                width: 82.percentOf(maxWidth),
+                padding: EdgeInsets.all(8.8.percentOf(maxWidth)),
+                decoration: BoxDecoration(
+                  color: colorScheme.surface,
+                  borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/flutter-dash.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            left: 0.8.vw,
-            top: 11.vw,
-            child: Container(
-              height: 6.vw,
-              width: 6.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.tertiary,
-                borderRadius: BorderRadius.circular(20.vw),
+              Positioned(
+                left: 2.35.percentOf(maxWidth),
+                top: 32.35.percentOf(maxWidth),
+                child: Container(
+                  height: 16.64.percentOf(maxWidth),
+                  width: 16.64.percentOf(maxWidth),
+                  decoration: BoxDecoration(
+                    color: colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            right: 0.8.vw,
-            top: 5.vw,
-            child: Container(
-              height: 8.4.vw,
-              width: 8.4.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.inversePrimary,
-                borderRadius: BorderRadius.circular(20.vw),
+              Positioned(
+                right: 2.35.percentOf(maxWidth),
+                top: 14.7.percentOf(maxWidth),
+                child: Container(
+                  height: 23.7.percentOf(maxWidth),
+                  width: 23.7.percentOf(maxWidth),
+                  decoration: BoxDecoration(
+                    color: colorScheme.inversePrimary,
+                    borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            left: 0.8.vw,
-            top: 11.vw,
-            child: Container(
-              height: 6.vw,
-              width: 6.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.tertiary,
-                borderRadius: BorderRadius.circular(20.vw),
+              Positioned(
+                left: 44.11.percentOf(maxWidth),
+                bottom: 0,
+                child: Container(
+                  height: 17.52.percentOf(maxWidth),
+                  width: 17.52.percentOf(maxWidth),
+                  decoration: BoxDecoration(
+                    color: colorScheme.inverseSurface,
+                    borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-          Positioned(
-            left: 15.vw,
-            bottom: 0.vw,
-            child: Container(
-              height: 6.3.vw,
-              width: 6.3.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.inverseSurface,
-                borderRadius: BorderRadius.circular(20.vw),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

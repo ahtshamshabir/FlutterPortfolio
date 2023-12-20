@@ -2,7 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_portfolio/utils/responsive_system.dart';
 
-enum DeviceSize { small, medium, large }
+enum DeviceSizeType {
+  small,
+  medium,
+  large,
+  xlarge,
+  ;
+
+  bool get isSmall => this == DeviceSizeType.small;
+
+  bool get isMedium => this == DeviceSizeType.medium;
+
+  bool get isLarge => this == DeviceSizeType.large;
+
+  bool get isXLarge => this == DeviceSizeType.xlarge;
+}
 
 double referenceHeight = 844;
 double referenceWidth = 393;
@@ -10,27 +24,32 @@ double referenceWidth = 393;
 double deviceHeight = 0;
 double deviceWidth = 0;
 
-DeviceSize deviceSizeOld = DeviceSize.medium;
+DeviceSizeType deviceSizeType = DeviceSizeType.medium;
+
+var breakPointsMap = {
+  DeviceSizeType.xlarge: 2560,
+  DeviceSizeType.large: 1728,
+  DeviceSizeType.medium: 1329,
+  DeviceSizeType.small: 1000,
+};
 
 void setDeviceSize(Size size) {
   deviceHeight = size.height;
   deviceWidth = size.width;
   deviceSize = size;
 
-  if (deviceHeight < 700) {
-    deviceSizeOld = DeviceSize.small;
-  } else if (deviceHeight > 900) {
-    deviceSizeOld = DeviceSize.large;
-  } else {
-    deviceSizeOld = DeviceSize.medium;
+  for (var item in breakPointsMap.entries) {
+    if (deviceWidth < item.value) {
+      deviceSizeType = item.key;
+    }
   }
 }
 
 TextStyle scaleFont(TextStyle textTheme) {
   double fontSize = textTheme.fontSize ?? 16;
-  if (deviceSizeOld == DeviceSize.small) {
+  if (deviceSizeType == DeviceSizeType.small) {
     return textTheme.copyWith(fontSize: fontSize - 3);
-  } else if (deviceSizeOld == DeviceSize.medium) {
+  } else if (deviceSizeType == DeviceSizeType.medium) {
     return textTheme.copyWith(fontSize: fontSize);
   } else {
     return textTheme.copyWith(fontSize: fontSize + 2);
@@ -65,4 +84,8 @@ extension DynamicScaler on num {
 
 extension TextStyleEXT on TextStyle {
   TextStyle get scaled => scaleFont(this);
+}
+
+extension PercentExt on num {
+  double percentOf(num number) => (this / 100) * number;
 }

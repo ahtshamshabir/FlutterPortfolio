@@ -11,3 +11,11 @@ mixin ThemeUtils {
     textTheme = theme.textTheme;
   }
 }
+
+mixin MediaQueryReadUtils {
+  late MediaQueryData mediaQuery;
+
+  void initQueryRead(BuildContext context) {
+    mediaQuery = context.getInheritedWidgetOfExactType<MediaQuery>()!.data;
+  }
+}
