@@ -18,83 +18,78 @@ class SegmentedToggle<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var colorScheme = theme.colorScheme;
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        var containerPadding = 2.0;
-        var maxWidth = constraints.maxWidth - (containerPadding * 2);
-        var maxHeight = constraints.maxHeight - (containerPadding * 2);
-        var div = maxWidth / 8;
-        var iconDiv = div * 2;
-        var iconSize = 80.percentOf(iconDiv);
-        var iconPadding = 10.percentOf(iconDiv);
-        var spacing = div;
-        var leftOffset = containerPadding + (index * (div + spacing));
-        print('leftOffset: $leftOffset');
-        print('maxWidth: $maxWidth');
-        print('maxHeight: $maxHeight');
-        print('div: $div');
-        print('iconDiv: $iconDiv');
-        return Stack(
-          children: [
-            Ink(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              decoration: BoxDecoration(
-                color: colorScheme.surface,
-                borderRadius: BorderRadius.circular(30),
-              ),
+    return LayoutBuilder(builder: (context, constraints) {
+      var maxWidth = constraints.maxWidth;
+      var maxHeight = constraints.maxWidth / 3.6;
+      var containerPadding = 3.percentOf(maxWidth);
+      var containerWidth = constraints.maxWidth - (containerPadding * 2);
+      var div = containerWidth / 8;
+      var containerHeight = div * 2;
+      var iconDiv = div * 2;
+      var iconPadding = 10.percentOf(iconDiv);
+      var spacing = div;
+      var leftOffset = containerPadding + (index * (iconDiv + spacing));
+      return Stack(
+        children: [
+          Ink(
+            width: maxWidth,
+            height: maxHeight,
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: BorderRadius.circular(30),
             ),
-            AnimatedPositioned(
-              duration: duration,
-              curve: curve,
-              left: leftOffset,
-              height: constraints.maxHeight,
-              width: iconDiv,
-              child: Container(
-                alignment: Alignment.center,
-                child: Ink(
-                  height: iconDiv,
-                  width: iconDiv,
-                  decoration: BoxDecoration(
-                    color: colorScheme.background,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+          ),
+          AnimatedPositioned(
+            duration: duration,
+            curve: curve,
+            left: leftOffset,
+            height: iconDiv,
+            width: iconDiv,
+            bottom: (maxHeight / 2) - (iconDiv / 2),
+            child: Container(
+              alignment: Alignment.center,
+              child: Ink(
+                height: iconDiv,
+                width: iconDiv,
+                decoration: BoxDecoration(
+                  color: colorScheme.background,
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
             ),
-            Container(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              padding: EdgeInsets.all(containerPadding),
-              child: Row(
-                children: [
-                  ...separateWidgets(
-                    children.entries.map(
-                      (entry) => SegmentedToggleButton(
-                        isActive: entry.key == value,
-                        onPressed: () => onChanged(entry.key),
-                        child: AnimatedScale(
-                          duration: duration,
-                          curve: curve,
-                          scale: entry.key == value ? 1 : 0.8,
-                          child: Container(
-                            height: iconSize,
-                            width: iconSize,
-                            padding: EdgeInsets.all(iconPadding),
-                            child: FittedBox(child: entry.value),
-                          ),
+          ),
+          Container(
+            width: maxWidth,
+            height: maxHeight,
+            padding: EdgeInsets.all(containerPadding),
+            child: Row(
+              children: [
+                ...separateWidgets(
+                  children.entries.map(
+                    (entry) => SegmentedToggleButton(
+                      isActive: entry.key == value,
+                      onPressed: () => onChanged(entry.key),
+                      child: AnimatedScale(
+                        duration: duration,
+                        curve: curve,
+                        scale: entry.key == value ? 1 : 0.8,
+                        child: Container(
+                          height: iconDiv,
+                          width: iconDiv,
+                          padding: EdgeInsets.all(iconPadding),
+                          child: FittedBox(child: entry.value),
                         ),
                       ),
                     ),
-                    SizedBox(width: spacing),
-                  )
-                ],
-              ),
+                  ),
+                  SizedBox(width: spacing),
+                )
+              ],
             ),
-          ],
-        );
-      }
-    );
+          ),
+        ],
+      );
+    });
   }
 }
 

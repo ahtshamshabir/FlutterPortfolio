@@ -18,30 +18,31 @@ class AppHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const sizedBox = SizedBox(width: double.infinity);
     return Container(
       margin: EdgeInsets.only(top: paddingTop),
       child: Material(
         color: Colors.transparent,
         child: Row(
           children: [
-            const Flexible(
-              flex: 43,
-              child: SizedBox(width: double.infinity),
+            Flexible(
+              flex: deviceSizeType.isDesktop ? 43 : 6,
+              child: sizedBox,
             ),
-            if (deviceSizeType.isDesktop) AppSocialHeader(),
-            const Flexible(
-              flex: 1,
-              child: SizedBox(width: double.infinity),
+            AppSocialHeader(),
+            Flexible(
+              flex: deviceSizeType.isDesktop ? 1 : 6,
+              child: sizedBox,
             ),
             AppHeaderDownloadButton(),
             const Flexible(
               flex: 22,
-              child: SizedBox(width: double.infinity),
+              child: sizedBox,
             ),
             BrightnessModeToggle(),
             const Flexible(
               flex: 6,
-              child: SizedBox(width: double.infinity),
+              child: sizedBox,
             ),
           ],
         ),
@@ -51,10 +52,28 @@ class AppHeader extends StatelessWidget {
 }
 
 class AppSocialHeader extends StatelessWidget with ThemeUtils {
+  EdgeInsets get padding {
+    if (deviceSizeType.isDesktop) {
+      return const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
+    } else {
+      return const EdgeInsets.symmetric(horizontal: 8, vertical: 7);
+    }
+  }
+
+  double get iconSize {
+    if (deviceSizeType.isDesktop) {
+      return 30;
+    } else {
+      return 15;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SocialHeader(
+      padding: padding,
+      iconSize: iconSize,
       children: [
         InkWell(
           borderRadius: BorderRadius.circular(5),
@@ -89,12 +108,38 @@ class AppSocialHeader extends StatelessWidget with ThemeUtils {
   }
 }
 
-class AppHeaderDownloadButton extends StatelessWidget {
+class AppHeaderDownloadButton extends StatelessWidget with ThemeUtils {
+  EdgeInsets get padding {
+    if (deviceSizeType.isDesktop) {
+      return const EdgeInsets.symmetric(horizontal: 15, vertical: 8);
+    } else {
+      return const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+    }
+  }
+
+  double get iconSize {
+    if (deviceSizeType.isDesktop) {
+      return 25;
+    } else {
+      return 15;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    initThemeUtils(context);
     return HeaderDownloadButton(
       onPressed: () {},
-      title: const Text('CV'),
+      padding: padding,
+      iconSize: iconSize,
+      title: Text(
+        'CV',
+        style: textTheme.bodyMedium!
+            .copyWith(
+              fontWeight: FontWeight.bold,
+            )
+            .scaleMinMax(min: 10, max: 25),
+      ),
     );
   }
 }

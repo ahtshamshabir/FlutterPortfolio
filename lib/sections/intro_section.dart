@@ -33,7 +33,7 @@ const avatarAlignmentMap = <DeviceSizeType, Alignment>{
   DeviceSizeType.desktopMedium: Alignment(1, 1),
   DeviceSizeType.desktopLarge: Alignment.centerRight,
   DeviceSizeType.desktopXLarge: Alignment.centerRight,
-  DeviceSizeType.mobileLarge: Alignment(1, 1),
+  DeviceSizeType.mobileLarge: Alignment(1, 0.8),
   DeviceSizeType.mobileMedium: Alignment(1, 1),
   DeviceSizeType.mobileSmall: Alignment(1, 1),
 };

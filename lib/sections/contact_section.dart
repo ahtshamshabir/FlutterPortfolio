@@ -90,7 +90,10 @@ class ContactSection extends StatelessWidget with ThemeUtils {
                   ),
                   const SizedBox(height: 40),
                   FilledButton(
-                    onPressed: () {},
+                    key: const ValueKey('send'),
+                    onPressed: () {
+                      print('send tapped');
+                    },
                     style: const ButtonStyle(
                       padding: MaterialStatePropertyAll(EdgeInsets.fromLTRB(35, 20, 15, 20)),
                     ),

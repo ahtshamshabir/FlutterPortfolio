@@ -1,4 +1,6 @@
 // iphone 14 screen size 844 x 390
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 enum DeviceSizeType {
@@ -34,7 +36,7 @@ Size deviceSize = const Size(0, 0), referenceSize = const Size(1728, 918);
 
 DeviceSizeType deviceSizeType = DeviceSizeType.desktopMedium;
 
-var breakPointsMap = {
+var breakPointsMap = <DeviceSizeType, double>{
   DeviceSizeType.desktopXLarge: 2560,
   DeviceSizeType.desktopLarge: 1728,
   DeviceSizeType.desktopMedium: 1329,
@@ -43,6 +45,9 @@ var breakPointsMap = {
   DeviceSizeType.mobileMedium: 375,
   DeviceSizeType.mobileSmall: 320,
 };
+
+var smallestWidth = breakPointsMap[DeviceSizeType.mobileSmall]!;
+var largestWidth = breakPointsMap[DeviceSizeType.desktopXLarge]!;
 
 void setDeviceSize(Size size) {
   deviceSize = size;
@@ -56,13 +61,40 @@ void setDeviceSize(Size size) {
 
 TextStyle scaleFont(TextStyle textTheme) {
   double fontSize = textTheme.fontSize ?? 16;
-  if (deviceSizeType == DeviceSizeType.desktopSmall) {
-    return textTheme.copyWith(fontSize: fontSize - 3);
-  } else if (deviceSizeType == DeviceSizeType.desktopMedium) {
-    return textTheme.copyWith(fontSize: fontSize);
-  } else {
-    return textTheme.copyWith(fontSize: fontSize + 2);
-  }
+  return textTheme.copyWith(fontSize: scaleWrtWidth(fontSize));
+}
+
+TextStyle scaleFontMinMax(
+  TextStyle textTheme, {
+  required double min,
+  required double max,
+      bool clamped = true,
+}) {
+  double fontSize = scaleMinMax(
+    min: min,
+    max: max,
+    ref: deviceSize.width,
+    minRef: smallestWidth,
+    maxRef: largestWidth,
+    clamped: clamped,
+  );
+  return textTheme.copyWith(fontSize: fontSize);
+}
+
+double scaleMinMax({
+  required double min,
+  required double max,
+  required double ref,
+  required double minRef,
+  required double maxRef,
+  bool clamped = true,
+}) {
+  var ratio = (ref - minRef) / (maxRef - minRef);
+  var value = lerpDouble(min, max, ratio)!;
+  return clamped ? value.clamp(min, max) : value;
+  // print('ref: $ref, minRef: $minRef, maxRef: $maxRef, ratio: $ratio, value: $value, min: $min, max: $max');
+  // var value2 = (min + ((max - min) * ((ref - minRef) / (maxRef - minRef))));
+  // print('value2: $value2');
 }
 
 double scaleWrtHeight(double unit) {
@@ -93,6 +125,8 @@ extension DynamicScaler on num {
 
 extension TextStyleEXT on TextStyle {
   TextStyle get scaled => scaleFont(this);
+
+  TextStyle scaleMinMax({required double min, required double max, bool clamped = true}) => scaleFontMinMax(this, min: min, max: max, clamped: clamped);
 }
 
 extension PercentExt on num {

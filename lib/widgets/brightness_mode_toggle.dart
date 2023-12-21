@@ -6,6 +6,13 @@ import 'package:flutter_portfolio/widgets/segmented_toggle.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BrightnessModeToggle extends StatelessWidget with ThemeUtils {
+  double get width {
+    if (deviceSizeType.isDesktop) {
+      return 200;
+    } else {
+      return 100;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
@@ -13,8 +20,7 @@ class BrightnessModeToggle extends StatelessWidget with ThemeUtils {
       builder: (context, ref, _) {
         var themeMode = ref.watch(themeModeProvider);
         return Container(
-          height: 40,
-          width: 130,
+          width: width,
           child: SegmentedToggle(
             value: themeMode,
             onChanged: (mode) {

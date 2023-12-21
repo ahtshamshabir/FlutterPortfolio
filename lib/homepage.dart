@@ -54,8 +54,8 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return LayoutBuilder(builder: (context, constraints) {
-      print('deviceSizeType: $deviceSizeType');
-      print('deviceSize: $deviceSize');
+      // print('deviceSizeType: $deviceSizeType');
+      // print('deviceSize: $deviceSize');
       return Scaffold(
         backgroundColor: theme.colorScheme.background,
         body: Shortcuts(
