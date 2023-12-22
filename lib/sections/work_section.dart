@@ -32,15 +32,40 @@ class _WorkSectionState extends State<WorkSection> with ThemeUtils {
   int get totalPages => workExperiences.length;
 
   double get padding {
-    if(deviceSizeType.isDesktop) return 20;
+    if (deviceSizeType.isDesktop) return 20;
     return 0;
+  }
+
+  double get sectionPadding {
+    if (deviceSizeType.isDesktop) return 120;
+    return 70;
+  }
+
+  double get paginationBoxWidth {
+    if (deviceSizeType.isDesktop) return 38.5.vw;
+    return 80.vw;
+  }
+
+  double get paginationDotSize {
+    if (deviceSizeType.isDesktop) return 2.5.vw;
+    return 5.vw;
+  }
+
+  double get paginationLineHeight {
+    if (deviceSizeType.isDesktop) return 0.3.vw;
+    return 0.6.vw;
+  }
+
+  double get paginationSpacing {
+    if (deviceSizeType.isDesktop) return 2.vw;
+    return 4.vw;
   }
 
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SectionWrapper(
-      padding: EdgeInsets.symmetric(vertical: 120),
+      padding: EdgeInsets.symmetric(vertical: sectionPadding),
       child: Align(
         alignment: Alignment.center,
         child: Container(
@@ -51,22 +76,22 @@ class _WorkSectionState extends State<WorkSection> with ThemeUtils {
               SizedBox(height: 2.vw),
               Center(
                 child: SizedBox(
-                  width: 38.5.vw,
+                  width: paginationBoxWidth,
                   child: ListenableBuilder(
                     listenable: controller,
                     builder: (context, _) {
                       var page = controller.hasClients ? controller.page! : 0.0;
                       return Pagination(
                         total: totalPages,
-                        dotSize: 2.5.vw,
-                        lineHeight: 0.3.vw,
+                        dotSize: paginationDotSize,
+                        lineHeight: paginationLineHeight,
                         currentProgress: page,
                       );
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 2.vw),
+              SizedBox(height: paginationSpacing),
               Expanded(
                 child: Stack(
                   alignment: Alignment.center,
@@ -210,30 +235,29 @@ class WorkExperienceSection extends StatelessWidget with ThemeUtils {
           Row(
             children: [
               Expanded(
-                child: FittedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: textTheme.headlineLarge,
-                      ),
-                      Text(
-                        '$company ($duration)',
-                        style: textTheme.bodyLarge,
-                      ),
-                    ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: textTheme.headlineLarge?.scaleMinMax(min: 20, max: 50),
+                    ),
+                    Text(
+                      '$company ($duration)',
+                      style: textTheme.bodyLarge?.scaleMinMax(min: 16, max: 30),
+                    ),
+                  ],
+                ),
+              ),
+              if (deviceSizeType.isDesktop) ...[
+                const Spacer(),
+                SizedBox(
+                  width: 18.vw,
+                  child: SkillsWidget(
+                    skills: skills,
                   ),
                 ),
-              ),
-              const Spacer(),
-              if(deviceSizeType.isDesktop)
-              SizedBox(
-                width: 18.vw,
-                child: SkillsWidget(
-                  skills: skills,
-                ),
-              ),
+              ]
             ],
           ),
           const SizedBox(height: 20),
@@ -242,7 +266,7 @@ class WorkExperienceSection extends StatelessWidget with ThemeUtils {
               ...descriptionBullets.map(
                 (e) => Text(
                   e,
-                  style: textTheme.bodyLarge,
+                  style: textTheme.bodyLarge?.scaleMinMax(min: 14, max: 30),
                 ),
               ),
             ],
@@ -253,7 +277,7 @@ class WorkExperienceSection extends StatelessWidget with ThemeUtils {
   }
 }
 
-class BulletList extends StatelessWidget with ThemeUtils{
+class BulletList extends StatelessWidget with ThemeUtils {
   List<Widget> children;
 
   BulletList({super.key, this.children = const []});
@@ -406,7 +430,7 @@ class PaginationDot extends StatelessWidget with ThemeUtils {
         width: size,
         decoration: BoxDecoration(
           color: isActive ? colorScheme.inversePrimary : colorScheme.inversePrimary.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(3.6.vw),
+          borderRadius: BorderRadius.circular(100),
         ),
       ),
     );

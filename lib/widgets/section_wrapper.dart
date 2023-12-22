@@ -4,7 +4,7 @@ import 'package:flutter_portfolio/utils/theme_utils.dart';
 
 class SectionWrapper extends StatelessWidget with ThemeUtils {
   final Widget child;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
   SectionWrapper({super.key, required this.child, this.padding});
   @override
   Widget build(BuildContext context) {
