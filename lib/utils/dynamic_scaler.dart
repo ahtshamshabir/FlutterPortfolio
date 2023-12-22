@@ -47,7 +47,7 @@ var breakPointsMap = <DeviceSizeType, double>{
 };
 
 var smallestWidth = breakPointsMap[DeviceSizeType.mobileSmall]!;
-var largestWidth = breakPointsMap[DeviceSizeType.desktopXLarge]!;
+var refDesktopWidth = breakPointsMap[DeviceSizeType.desktopLarge]!;
 
 void setDeviceSize(Size size) {
   deviceSize = size;
@@ -75,7 +75,7 @@ TextStyle scaleFontMinMax(
     max: max,
     ref: deviceSize.width,
     minRef: smallestWidth,
-    maxRef: largestWidth,
+    maxRef: refDesktopWidth,
     clamped: clamped,
   );
   return textTheme.copyWith(fontSize: fontSize);

@@ -9,10 +9,29 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SkillsSection extends StatelessWidget with ThemeUtils {
   SkillsSection({super.key});
 
+  int get cardsPerRow  {
+    if (deviceSizeType.isDesktop) {
+      return 6;
+    } else {
+      return 3;
+    }
+  }
+
+  double get sectionPadding {
+    if (deviceSizeType.isDesktop) return 120;
+    return 70;
+  }
+
+  double get cardPadding {
+    if (deviceSizeType.isDesktop) return 2.vw;
+    return 5.vw;
+  }
+
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SectionWrapper(
+      padding: EdgeInsets.symmetric(horizontal:5.vw, vertical: sectionPadding),
       child: Align(
         alignment: Alignment.center,
         child: Container(
@@ -26,10 +45,7 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
             children: [
               Text(
                 'Skills',
-                style: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 40,
-                ),
+                style: textTheme.headlineLarge?.scaleMinMax(min: 20, max: 40),
               ),
               const SizedBox(height: 20),
               Expanded(
@@ -39,7 +55,6 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
                     builder: (context, constraints) {
                       var maxWidth = constraints.maxWidth;
                       var spacing = 20.0;
-                      var cardsPerRow = 6;
                       var cardSize = (maxWidth - (cardsPerRow - 1) * spacing) / cardsPerRow;
                       return Wrap(
                         spacing: spacing,
@@ -52,7 +67,7 @@ class SkillsSection extends StatelessWidget with ThemeUtils {
                               child: SkillCard(
                                 icon: skillRecord.details.icon,
                                 title: skillRecord.details.name,
-                                padding: skillRecord.padding,
+                                padding: skillRecord.padding ?? EdgeInsets.all(cardPadding),
                               ),
                             ),
                           ),

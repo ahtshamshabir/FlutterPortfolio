@@ -4,6 +4,7 @@ import 'package:flutter_portfolio/homepage.dart';
 import 'package:flutter_portfolio/themes/dark_theme.dart';
 import 'package:flutter_portfolio/themes/light_theme.dart';
 import 'package:flutter_portfolio/themes/theme_mode_provider.dart';
+import 'package:flutter_portfolio/utils/global_context.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
 import 'package:flutter_portfolio/widgets/global_context_initializer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,25 +32,47 @@ setLightSystemUIOverlayStyle() {
 class App extends ConsumerWidget with MediaQueryReadUtils {
   App({super.key});
 
+  showGlobal(String text) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showGlobalDialog((context) => AlertDialog(
+        title: Text(text),
+      ));
+    });
+  }
+
   setSystemUIOverlayStyle(ThemeMode mode) {
+    // var arr = <String>[];
     if (mode == ThemeMode.system) {
-      print('system: $mode');
+      // arr.add('system: $mode');
       var brightness = mediaQuery.platformBrightness;
+
       if (brightness == Brightness.dark) {
         mode = ThemeMode.dark;
       } else {
         mode = ThemeMode.light;
       }
     }
-    print('mode: $mode');
+    // arr.add('mode: $mode');
     if (mode == ThemeMode.dark) {
-      print('dark: $mode');
-      setDarkSystemUIOverlayStyle();
+      // arr.add('dark: $mode');
+      if (previousMode == ThemeMode.dark) {
+        // arr.add('previousMode == ThemeMode.dark');
+      }
+      else {
+        setDarkSystemUIOverlayStyle();
+      }
     } else {
-      print('light: $mode');
-      setLightSystemUIOverlayStyle();
+      // arr.add('light: $mode');
+      if (previousMode == ThemeMode.light) {
+        // arr.add('previousMode == ThemeMode.light');
+      }
+      else {
+        setLightSystemUIOverlayStyle();
+      }
     }
+    previousMode = mode;
   }
+
 
   // This widget is the root of your application.
   @override
@@ -69,3 +92,5 @@ class App extends ConsumerWidget with MediaQueryReadUtils {
     );
   }
 }
+
+ThemeMode? previousMode;

@@ -6,10 +6,36 @@ import 'package:flutter_portfolio/widgets/section_wrapper.dart';
 class ContactSection extends StatelessWidget with ThemeUtils {
   ContactSection({super.key});
 
+  double get sectionPadding {
+    if (deviceSizeType.isDesktop) return 120;
+    return 70;
+  }
+
+  double get formPadding {
+    if (deviceSizeType.isDesktop) return 20.vw;
+    return 5.vw;
+  }
+
+  double get headingSpacing {
+    if (deviceSizeType.isDesktop) return 100;
+    return 50;
+  }
+
+  double get inputSpacing {
+    if (deviceSizeType.isDesktop) return 40;
+    return 20;
+  }
+
+  double get headingPaddingTop {
+    if (deviceSizeType.isDesktop) return 2.vw;
+    return 20;
+  }
+
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SectionWrapper(
+      padding: EdgeInsets.symmetric(horizontal: 5.vw, vertical: sectionPadding),
       child: Container(
         height: double.infinity,
         width: double.infinity,
@@ -17,7 +43,7 @@ class ContactSection extends StatelessWidget with ThemeUtils {
           color: colorScheme.surfaceVariant,
           borderRadius: BorderRadius.circular(30),
         ),
-        padding: EdgeInsets.all(1.vw).copyWith(top: 2.vw),
+        padding: EdgeInsets.all(1.vw).copyWith(top: headingPaddingTop),
         child: Column(
           children: [
             RichText(
@@ -25,28 +51,28 @@ class ContactSection extends StatelessWidget with ThemeUtils {
                 children: [
                   TextSpan(
                     text: 'Interested in working',
-                    style: textTheme.headlineLarge,
+                    style: textTheme.headlineLarge!.scaleMinMax(min: 20, max: 40),
                   ),
                   TextSpan(
                     text: ' ',
-                    style: textTheme.headlineLarge,
+                    style: textTheme.headlineLarge!.scaleMinMax(min: 20, max: 40),
                   ),
                   TextSpan(
                     text: 'Together',
                     style: textTheme.headlineLarge?.copyWith(
                       color: colorScheme.primary,
-                    ),
+                    ).scaleMinMax(min: 20, max: 40),
                   ),
                   TextSpan(
                     text: '?',
-                    style: textTheme.headlineLarge,
+                    style: textTheme.headlineLarge!.scaleMinMax(min: 20, max: 40),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 100),
+            SizedBox(height: headingSpacing),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.vw),
+              padding: EdgeInsets.symmetric(horizontal: formPadding),
               child: Column(
                 children: [
                   TextFormField(
@@ -63,7 +89,7 @@ class ContactSection extends StatelessWidget with ThemeUtils {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: inputSpacing),
                   TextFormField(
                     decoration: const InputDecoration(
                       label: Text(
@@ -78,7 +104,7 @@ class ContactSection extends StatelessWidget with ThemeUtils {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: inputSpacing),
                   TextFormField(
                     maxLines: 5,
                     decoration: const InputDecoration(
@@ -88,7 +114,7 @@ class ContactSection extends StatelessWidget with ThemeUtils {
                       alignLabelWithHint: true,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: inputSpacing),
                   FilledButton(
                     key: const ValueKey('send'),
                     onPressed: () {

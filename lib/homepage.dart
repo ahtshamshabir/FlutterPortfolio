@@ -124,9 +124,9 @@ class HomepageSections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var children = [
-      WorkSection(key: const ValueKey('work')),
       IntroSection(key: const ValueKey('intro')),
       // DevicesSection(),
+      WorkSection(key: const ValueKey('work')),
       SkillsSection(key: const ValueKey('skills')),
       ProjectsSection(key: const ValueKey('projects')),
       ContactSection(key: const ValueKey('contact')),

@@ -240,7 +240,7 @@ class WorkExperienceSection extends StatelessWidget with ThemeUtils {
                   children: [
                     Text(
                       title,
-                      style: textTheme.headlineLarge?.scaleMinMax(min: 20, max: 50),
+                      style: textTheme.headlineLarge?.scaleMinMax(min: 20, max: 40),
                     ),
                     Text(
                       '$company ($duration)',
@@ -261,15 +261,19 @@ class WorkExperienceSection extends StatelessWidget with ThemeUtils {
             ],
           ),
           const SizedBox(height: 20),
-          BulletList(
-            children: [
-              ...descriptionBullets.map(
-                (e) => Text(
-                  e,
-                  style: textTheme.bodyLarge?.scaleMinMax(min: 14, max: 30),
-                ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: BulletList(
+                children: [
+                  ...descriptionBullets.map(
+                    (e) => Text(
+                      e,
+                      style: textTheme.bodyLarge?.scaleMinMax(min: 14, max: 30),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           )
         ],
       ),
