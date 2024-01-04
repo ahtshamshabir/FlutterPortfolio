@@ -82,7 +82,7 @@ class App extends ConsumerWidget with MediaQueryReadUtils {
     // print('themeMode: $themeMode');
     setSystemUIOverlayStyle(themeMode);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Raja Ahtsham Shabir | Flutter Portfolio',
       theme: lightThemeData,
       darkTheme: darkThemeData,
       themeMode: themeMode,
