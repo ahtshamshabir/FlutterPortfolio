@@ -1,7 +1,29 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/utils/svg_to_png.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 extension CopyWith on SvgPicture {
+  Widget toPng() {
+    var pngBytes = getPngDataFromCache(this);
+    if (pngBytes == null) {
+      throw Exception('SvgPicture not found in cache');
+      return FutureBuilder(
+        future: svgStringToPngBytes(svgStringsMap[this]!),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var pngBytes = snapshot.data as Uint8List;
+            pngsMap[svgStringsMap[this]!] = pngBytes;
+            return Image.memory(pngBytes);
+          } else {
+            return Container();
+          }
+        },
+      );
+    }
+    return Image.memory(pngBytes);
+  }
   SvgPicture copyWith({
     BytesLoader? bytesLoader,
     Key? key,
@@ -71,4 +93,50 @@ class SvgIcons {
   static SvgPicture strapi = SvgPicture.asset('assets/icons/strapi.svg');
   static SvgPicture typescript = SvgPicture.asset('assets/icons/typescript.svg');
   static SvgPicture vue = SvgPicture.asset('assets/icons/vue.svg');
+}
+
+var svgStringsMap = <SvgPicture, String> {
+  SvgIcons.blender: 'assets/icons/blender.svg',
+  SvgIcons.firebase: 'assets/icons/firebase.svg',
+  SvgIcons.figma: 'assets/icons/figma.svg',
+  SvgIcons.flutter: 'assets/icons/flutter.svg',
+  SvgIcons.github: 'assets/icons/github.svg',
+  SvgIcons.google_cloud: 'assets/icons/google_cloud.svg',
+  SvgIcons.graphql: 'assets/icons/graphql.svg',
+  SvgIcons.illustrator: 'assets/icons/illustrator.svg',
+  SvgIcons.instagram: 'assets/icons/instagram.svg',
+  SvgIcons.javascript: 'assets/icons/javascript.svg',
+  SvgIcons.linkedin: 'assets/icons/linkedin.svg',
+  SvgIcons.mongodb: 'assets/icons/mongodb.svg',
+  SvgIcons.mysql: 'assets/icons/mysql.svg',
+  SvgIcons.neo4j: 'assets/icons/neo4j.svg',
+  SvgIcons.nodejs: 'assets/icons/nodejs.svg',
+  SvgIcons.photoshop: 'assets/icons/photoshop.svg',
+  SvgIcons.php: 'assets/icons/php.svg',
+  SvgIcons.react: 'assets/icons/react.svg',
+  SvgIcons.strapi: 'assets/icons/strapi.svg',
+  SvgIcons.typescript: 'assets/icons/typescript.svg',
+  SvgIcons.vue: 'assets/icons/vue.svg',
+  SvgIcons.youtube: 'assets/icons/youtube.svg',
+};
+
+var pngsMap = <String, Uint8List> {};
+
+Future cachePngs() async {
+  for (var entry in svgStringsMap.entries) {
+    var pngBytes = await svgStringToPngBytes(entry.value);
+    pngsMap[entry.value] = pngBytes;
+  }
+}
+
+Uint8List? getPngDataFromCache(SvgPicture svgPicture) {
+  var svgString = svgStringsMap[svgPicture];
+  if (svgString == null) {
+    return null;
+  }
+  var pngBytes = pngsMap[svgString];
+  if (pngBytes == null) {
+    return null;
+  }
+  return pngBytes;
 }

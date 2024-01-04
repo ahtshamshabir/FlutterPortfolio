@@ -9,11 +9,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ProjectsSection extends StatelessWidget with ThemeUtils {
   ProjectsSection({super.key});
 
+  double get sectionPadding {
+    if (deviceSizeType.isDesktop) return 120;
+    return 70;
+  }
+
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SectionWrapper(
-      padding: EdgeInsets.symmetric(horizontal: 5.vw, vertical: 4.vw),
+      padding: EdgeInsets.symmetric(horizontal: 5.vw, vertical: sectionPadding),
       child: Align(
         alignment: Alignment.center,
         child: Container(
@@ -27,10 +32,7 @@ class ProjectsSection extends StatelessWidget with ThemeUtils {
             children: [
               Text(
                 'Projects',
-                style: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 40,
-                ),
+                style: textTheme.headlineLarge!.scaleMinMax(min: 20, max: 40),
               ),
               const SizedBox(height: 20),
               Expanded(

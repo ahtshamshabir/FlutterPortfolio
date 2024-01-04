@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portfolio/utils/dynamic_scaler.dart';
 import 'package:flutter_portfolio/utils/separate_widgets.dart';
 
 class SegmentedToggle<T> extends StatelessWidget {
@@ -13,67 +14,82 @@ class SegmentedToggle<T> extends StatelessWidget {
 
   int get index => children.keys.toList().indexOf(value);
 
-  double get leftOffset {
-    return initialPadding + (index * (28 + 14 + 15));
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var colorScheme = theme.colorScheme;
-    return IntrinsicHeight(
-      child: IntrinsicWidth(
-        child: Stack(
-          children: [
-            Ink(
-              decoration: BoxDecoration(
-                color: colorScheme.surface,
-                borderRadius: BorderRadius.circular(30),
-              ),
+    return LayoutBuilder(builder: (context, constraints) {
+      var maxWidth = constraints.maxWidth;
+      var maxHeight = constraints.maxWidth / 3.6;
+      var containerPadding = 3.percentOf(maxWidth);
+      var containerWidth = constraints.maxWidth - (containerPadding * 2);
+      var div = containerWidth / 8;
+      var containerHeight = div * 2;
+      var iconDiv = div * 2;
+      var iconPadding = 10.percentOf(iconDiv);
+      var spacing = div;
+      var leftOffset = containerPadding + (index * (iconDiv + spacing));
+      return Stack(
+        children: [
+          Ink(
+            width: maxWidth,
+            height: maxHeight,
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: BorderRadius.circular(30),
             ),
-            AnimatedPositioned(
-              duration: duration,
-              curve: curve,
-              left: leftOffset,
-              bottom: initialPadding,
+          ),
+          AnimatedPositioned(
+            duration: duration,
+            curve: curve,
+            left: leftOffset,
+            height: iconDiv,
+            width: iconDiv,
+            bottom: (maxHeight / 2) - (iconDiv / 2),
+            child: Container(
+              alignment: Alignment.center,
               child: Ink(
-                height: 43,
-                width: 43,
+                height: iconDiv,
+                width: iconDiv,
                 decoration: BoxDecoration(
                   color: colorScheme.background,
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(3),
-              child: Row(
-                children: [
-                  ...separateWidgets(
-                    children.entries.map(
-                      (entry) => SegmentedToggleButton(
-                        isActive: entry.key == value,
-                        onPressed: () => onChanged(entry.key),
-                        child: AnimatedScale(
-                          duration: duration,
-                          curve: curve,
-                          scale: entry.key == value ? 1 : 0.8,
-                          child: Container(
-                            padding: const EdgeInsets.all(7),
-                            child: entry.value,
-                          ),
+          ),
+          Container(
+            width: maxWidth,
+            height: maxHeight,
+            padding: EdgeInsets.all(containerPadding),
+            child: Row(
+              children: [
+                ...separateWidgets(
+                  children.entries.map(
+                    (entry) => SegmentedToggleButton(
+                      isActive: entry.key == value,
+                      onPressed: () => onChanged(entry.key),
+                      child: AnimatedScale(
+                        duration: duration,
+                        curve: curve,
+                        scale: entry.key == value ? 1 : 0.8,
+                        child: Container(
+                          height: iconDiv,
+                          width: iconDiv,
+                          padding: EdgeInsets.all(iconPadding),
+                          child: FittedBox(child: entry.value),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 15),
-                  )
-                ],
-              ),
+                  ),
+                  SizedBox(width: spacing),
+                )
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ],
+      );
+    });
   }
 }
 

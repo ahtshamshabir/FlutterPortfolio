@@ -6,8 +6,68 @@ import 'package:flutter_portfolio/utils/svg_icons.dart';
 import 'package:flutter_portfolio/utils/svg_to_png.dart';
 import 'package:flutter_portfolio/utils/theme_utils.dart';
 
+import '../utils/responsive_system.dart';
+
+const avatarSizeMap = <DeviceSizeType, double>{
+  DeviceSizeType.desktopSmall: 60,
+  DeviceSizeType.desktopMedium: 35,
+  DeviceSizeType.desktopLarge: 34,
+  DeviceSizeType.desktopXLarge: 34,
+  DeviceSizeType.mobileLarge: 70,
+  DeviceSizeType.mobileMedium: 70,
+  DeviceSizeType.mobileSmall: 70,
+};
+
+const infoAlignmentMap = <DeviceSizeType, Alignment>{
+  DeviceSizeType.desktopSmall: Alignment(-1, -0.8),
+  DeviceSizeType.desktopMedium: Alignment(-1, -0.6),
+  DeviceSizeType.desktopLarge: Alignment.centerLeft,
+  DeviceSizeType.desktopXLarge: Alignment.centerLeft,
+  DeviceSizeType.mobileLarge: Alignment(-1, -0.5),
+  DeviceSizeType.mobileMedium: Alignment(-1, -0.5),
+  DeviceSizeType.mobileSmall: Alignment(-1, -0.5),
+};
+
+const avatarAlignmentMap = <DeviceSizeType, Alignment>{
+  DeviceSizeType.desktopSmall: Alignment(1, 1),
+  DeviceSizeType.desktopMedium: Alignment(1, 1),
+  DeviceSizeType.desktopLarge: Alignment.centerRight,
+  DeviceSizeType.desktopXLarge: Alignment.centerRight,
+  DeviceSizeType.mobileLarge: Alignment(1, 0.8),
+  DeviceSizeType.mobileMedium: Alignment(1, 1),
+  DeviceSizeType.mobileSmall: Alignment(1, 1),
+};
+
 class IntroSection extends StatelessWidget with ThemeUtils {
   IntroSection({super.key});
+
+  Alignment get infoAlignment {
+    return infoAlignmentMap[deviceSizeType]!;
+  }
+
+  Alignment get avatarAlignment {
+    return avatarAlignmentMap[deviceSizeType]!;
+  }
+
+  double get avatarSize {
+    return avatarSizeMap[deviceSizeType]!.vw;
+  }
+
+  double get infoSectionMargin {
+    if (deviceSizeType.isMobile) {
+      return 30;
+    } else {
+      return 0;
+    }
+  }
+
+  double get verticalPadding {
+    if (deviceSizeType.isDesktop) {
+      return 17.vh;
+    } else {
+      return 5.vh;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,30 +76,28 @@ class IntroSection extends StatelessWidget with ThemeUtils {
       height: double.infinity,
       width: double.infinity,
       color: colorScheme.background,
-      padding: const EdgeInsets.only(left: 100, right: 150),
-      child: Row(
+      padding: EdgeInsets.only(left: 3.vw, right: 7.vw, top: verticalPadding, bottom: verticalPadding),
+      child: Stack(
         children: [
-          InfoSection(),
-          const Spacer(),
-          Container(
-            height: 200,
-            width: 200,
+          AnimatedContainer(
+            alignment: infoAlignment,
+            duration: const Duration(milliseconds: 500),
+            margin: EdgeInsets.only(right: infoSectionMargin),
+            curve: Curves.ease,
             child: FittedBox(
-              child: FutureBuilder(
-                  future: svgStringToPngBytes('assets/icons/blender.svg', context),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Image.memory(snapshot.data!);
-                    } else if (snapshot.error != null) {
-                      print(snapshot.error);
-                      print((snapshot.error as Error).stackTrace);
-                      return Text(snapshot.error.toString());
-                    }
-                    return Container();
-                  }),
+              child: InfoSection(),
             ),
           ),
-          AvatarSection(),
+          AnimatedAlign(
+            alignment: avatarAlignment,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+            child: Container(
+              height: avatarSize,
+              width: avatarSize,
+              child: AvatarSection(),
+            ),
+          ),
         ],
       ),
     );
@@ -52,18 +110,18 @@ class InfoSection extends StatelessWidget with ThemeUtils {
     initThemeUtils(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           '''Column(
-  children: [''',
+ children: [''',
           style: textTheme.bodyLarge!.copyWith(
             fontFamily: FontFamily.sourceCodePro,
             color: colorScheme.onBackground.withOpacity(0.25),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 60),
+          padding: const EdgeInsets.only(left: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -106,7 +164,7 @@ class InfoSection extends StatelessWidget with ThemeUtils {
           ),
         ),
         Text(
-          '''  ],
+          ''' ],
 );''',
           style: textTheme.bodyLarge?.copyWith(
             fontFamily: FontFamily.sourceCodePro,
@@ -124,79 +182,73 @@ class AvatarSection extends StatelessWidget with ThemeUtils {
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
-    return Container(
-      height: 34.vw,
-      width: 34.vw,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            height: 28.vw,
-            width: 28.vw,
-            padding: EdgeInsets.all(3.vw),
-            decoration: BoxDecoration(
-              color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(20.vw),
-            ),
-            child: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/flutter-dash.png'),
-                  fit: BoxFit.cover,
+    return LayoutBuilder(
+      builder: (context, constaints) {
+        var maxWidth = constaints.maxWidth;
+        var maxHeight = constaints.maxHeight;
+        return Container(
+          height: maxHeight,
+          width: maxWidth,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height: 82.percentOf(maxWidth),
+                width: 82.percentOf(maxWidth),
+                padding: EdgeInsets.all(8.8.percentOf(maxWidth)),
+                decoration: BoxDecoration(
+                  color: colorScheme.surface,
+                  borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/flutter-dash.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            left: 0.8.vw,
-            top: 11.vw,
-            child: Container(
-              height: 6.vw,
-              width: 6.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.tertiary,
-                borderRadius: BorderRadius.circular(20.vw),
+              Positioned(
+                left: 2.35.percentOf(maxWidth),
+                top: 32.35.percentOf(maxWidth),
+                child: Container(
+                  height: 16.64.percentOf(maxWidth),
+                  width: 16.64.percentOf(maxWidth),
+                  decoration: BoxDecoration(
+                    color: colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            right: 0.8.vw,
-            top: 5.vw,
-            child: Container(
-              height: 8.4.vw,
-              width: 8.4.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.inversePrimary,
-                borderRadius: BorderRadius.circular(20.vw),
+              Positioned(
+                right: 2.35.percentOf(maxWidth),
+                top: 14.7.percentOf(maxWidth),
+                child: Container(
+                  height: 23.7.percentOf(maxWidth),
+                  width: 23.7.percentOf(maxWidth),
+                  decoration: BoxDecoration(
+                    color: colorScheme.inversePrimary,
+                    borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            left: 0.8.vw,
-            top: 11.vw,
-            child: Container(
-              height: 6.vw,
-              width: 6.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.tertiary,
-                borderRadius: BorderRadius.circular(20.vw),
+              Positioned(
+                left: 44.11.percentOf(maxWidth),
+                bottom: 0,
+                child: Container(
+                  height: 17.52.percentOf(maxWidth),
+                  width: 17.52.percentOf(maxWidth),
+                  decoration: BoxDecoration(
+                    color: colorScheme.inverseSurface,
+                    borderRadius: BorderRadius.circular(58.82.percentOf(maxWidth)),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-          Positioned(
-            left: 15.vw,
-            bottom: 0.vw,
-            child: Container(
-              height: 6.3.vw,
-              width: 6.3.vw,
-              decoration: BoxDecoration(
-                color: colorScheme.inverseSurface,
-                borderRadius: BorderRadius.circular(20.vw),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

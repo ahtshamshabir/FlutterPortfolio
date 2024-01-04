@@ -8,32 +8,41 @@ import 'package:flutter_portfolio/widgets/header_download_button.dart';
 import 'package:flutter_portfolio/widgets/social_header.dart';
 
 class AppHeader extends StatelessWidget {
+  double get paddingTop {
+    if (deviceSizeType.isDesktop) {
+      return 40;
+    } else {
+      return 10;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    const sizedBox = SizedBox(width: double.infinity);
     return Container(
-      margin: const EdgeInsets.only(top: 40),
+      margin: EdgeInsets.only(top: paddingTop),
       child: Material(
         color: Colors.transparent,
         child: Row(
           children: [
-            const Flexible(
-              flex: 43,
-              child: SizedBox(width: double.infinity),
+            Flexible(
+              flex: deviceSizeType.isDesktop ? 43 : 6,
+              child: sizedBox,
             ),
             AppSocialHeader(),
-            const Flexible(
-              flex: 1,
-              child: SizedBox(width: double.infinity),
+            Flexible(
+              flex: deviceSizeType.isDesktop ? 1 : 6,
+              child: sizedBox,
             ),
             AppHeaderDownloadButton(),
             const Flexible(
               flex: 22,
-              child: SizedBox(width: double.infinity),
+              child: sizedBox,
             ),
             BrightnessModeToggle(),
             const Flexible(
               flex: 6,
-              child: SizedBox(width: double.infinity),
+              child: sizedBox,
             ),
           ],
         ),
@@ -43,52 +52,94 @@ class AppHeader extends StatelessWidget {
 }
 
 class AppSocialHeader extends StatelessWidget with ThemeUtils {
+  EdgeInsets get padding {
+    if (deviceSizeType.isDesktop) {
+      return const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
+    } else {
+      return const EdgeInsets.symmetric(horizontal: 8, vertical: 7);
+    }
+  }
+
+  double get iconSize {
+    if (deviceSizeType.isDesktop) {
+      return 30;
+    } else {
+      return 15;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     initThemeUtils(context);
     return SocialHeader(
+      padding: padding,
+      iconSize: iconSize,
       children: [
         InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.linkedin,
+          child: SvgIcons.linkedin.toPng(),
         ),
         InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.github.copyWith(
-            color: colorScheme.onBackground,
-          ),
+          child: SvgIcons.github.toPng(),
         ),
         InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.youtube,
+          child: SvgIcons.youtube.toPng(),
         ),
         InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             print('tapped');
           },
-          child: SvgIcons.instagram,
+          child: SvgIcons.instagram.toPng(),
         ),
       ],
     );
   }
 }
 
-class AppHeaderDownloadButton extends StatelessWidget {
+class AppHeaderDownloadButton extends StatelessWidget with ThemeUtils {
+  EdgeInsets get padding {
+    if (deviceSizeType.isDesktop) {
+      return const EdgeInsets.symmetric(horizontal: 15, vertical: 8);
+    } else {
+      return const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+    }
+  }
+
+  double get iconSize {
+    if (deviceSizeType.isDesktop) {
+      return 25;
+    } else {
+      return 15;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    initThemeUtils(context);
     return HeaderDownloadButton(
       onPressed: () {},
-      title: const Text('CV'),
+      padding: padding,
+      iconSize: iconSize,
+      title: Text(
+        'CV',
+        style: textTheme.bodyMedium!
+            .copyWith(
+              fontWeight: FontWeight.bold,
+            )
+            .scaleMinMax(min: 10, max: 25),
+      ),
     );
   }
 }
